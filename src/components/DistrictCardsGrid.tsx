@@ -20,11 +20,11 @@ export const DistrictCardsGrid: React.FC<DistrictCardsGridProps> = ({
     <div id="district-cards-section" className="space-y-3">
       <div className="flex flex-wrap items-center justify-between px-1 gap-2">
         <div>
-          <h2 className="text-base font-bold text-blue-950 dark:text-white flex items-center">
+          <h2 className="text-base font-extrabold text-slate-900 dark:text-white flex items-center">
             <MapPin className="w-4 h-4 text-sky-600 dark:text-sky-400 mr-1.5" />
             AYAC Lagos District Breakdowns
           </h2>
-          <p className="text-xs text-blue-800/70 dark:text-sky-300/70">
+          <p className="text-xs text-slate-600 dark:text-sky-300/80">
             Click any district to view or record attendance for Badagry, Epe, Igbogbo, Ijede, Irawo, Magbon-Alade, Morogbo & State Church Ikorodu
           </p>
         </div>
@@ -33,7 +33,7 @@ export const DistrictCardsGrid: React.FC<DistrictCardsGridProps> = ({
           <button
             id="btn-clear-district-filter"
             onClick={() => onSelectFilterDistrict(null)}
-            className="text-xs text-blue-950 dark:text-sky-100 font-bold bg-sky-100 dark:bg-blue-900 hover:bg-sky-200 dark:hover:bg-blue-800 border border-sky-300 dark:border-blue-700 px-3 py-1 rounded-md transition-colors cursor-pointer"
+            className="text-xs text-indigo-950 dark:text-indigo-100 font-extrabold bg-indigo-100 dark:bg-indigo-950 hover:bg-indigo-200 dark:hover:bg-indigo-900 border border-indigo-300 dark:border-indigo-700 px-3 py-1 rounded-md transition-colors cursor-pointer"
           >
             Show All Districts ({selectedFilterDistrict} active)
           </button>
@@ -50,63 +50,66 @@ export const DistrictCardsGrid: React.FC<DistrictCardsGridProps> = ({
             <div
               key={s.district}
               id={`district-card-${s.district.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
-              className={`bg-white dark:bg-blue-950/80 rounded-xl border transition-all shadow-2xs hover:shadow-md flex flex-col justify-between ${
+              className={`bg-white dark:bg-blue-950/80 rounded-xl border transition-all shadow-xs hover:shadow-md flex flex-col justify-between ${
                 isSelected
-                  ? 'border-sky-500 ring-2 ring-sky-400/40 bg-sky-50/30 dark:bg-blue-900/40'
+                  ? 'border-indigo-500 ring-2 ring-indigo-400/40 bg-indigo-50/30 dark:bg-indigo-950/40'
                   : s.hasReportedCurrentSunday
-                  ? 'border-blue-100 dark:border-blue-900 hover:border-sky-300 dark:hover:border-sky-700'
-                  : 'border-blue-200/80 dark:border-blue-900 bg-blue-50/30 dark:bg-blue-950/40'
+                  ? 'border-emerald-200 dark:border-emerald-900/60 hover:border-emerald-400'
+                  : 'border-slate-200 dark:border-blue-900 bg-slate-50/40 dark:bg-blue-950/40'
               }`}
             >
               {/* Card Top Header */}
-              <div className="p-4 border-b border-blue-50 dark:border-blue-900/60">
+              <div className="p-4 border-b border-slate-100 dark:border-blue-900/60">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h3 className="font-bold text-blue-950 dark:text-white text-sm tracking-tight">
+                    <h3 className="font-extrabold text-slate-900 dark:text-white text-sm tracking-tight">
                       {s.district}
                     </h3>
-                    <span className="text-[11px] text-blue-600/70 dark:text-sky-300/70 font-medium">AYAC District</span>
+                    <span className="text-[11px] text-slate-500 dark:text-sky-300/70 font-semibold">AYAC District</span>
                   </div>
 
                   {s.hasReportedCurrentSunday ? (
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-100 text-blue-950 dark:bg-sky-500/20 dark:text-sky-200 border border-sky-300 dark:border-sky-500/30">
-                      <CheckCircle className="w-3 h-3 mr-1 text-sky-600 dark:text-sky-400" />
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-900 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+                      <CheckCircle className="w-3 h-3 mr-1 text-emerald-600 dark:text-emerald-400" />
                       Reported
                     </span>
                   ) : (
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100/70 text-blue-800 dark:bg-blue-900 dark:text-sky-300 border border-blue-200 dark:border-blue-800">
-                      <Clock className="w-3 h-3 mr-1 text-blue-700 dark:text-sky-400" />
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300 border border-amber-300 dark:border-amber-800">
+                      <Clock className="w-3 h-3 mr-1 text-amber-600 dark:text-amber-400" />
                       Pending
                     </span>
                   )}
                 </div>
 
-                {/* Counts Summary */}
-                <div className="mt-3.5 grid grid-cols-3 gap-2 text-center bg-blue-50/60 dark:bg-blue-900/40 p-2.5 rounded-lg border border-blue-100/80 dark:border-blue-900">
-                  <div>
-                    <div className="text-[10px] uppercase font-extrabold text-sky-600 dark:text-sky-400">Males</div>
-                    <div className="text-sm font-black text-blue-950 dark:text-white mt-0.5">{s.males}</div>
+                {/* Counts Summary - Vibrant Colors */}
+                <div className="mt-3.5 grid grid-cols-3 gap-2 text-center bg-slate-50/80 dark:bg-blue-900/40 p-2.5 rounded-lg border border-slate-200/80 dark:border-blue-900">
+                  {/* Males - Cyan / Blue */}
+                  <div className="bg-cyan-50/60 dark:bg-cyan-950/40 p-1.5 rounded-md border border-cyan-200/60 dark:border-cyan-800/60">
+                    <div className="text-[10px] uppercase font-black text-cyan-700 dark:text-cyan-300">Males (M)</div>
+                    <div className="text-sm font-black text-cyan-950 dark:text-cyan-100 mt-0.5">{s.males}</div>
                   </div>
 
-                  <div>
-                    <div className="text-[10px] uppercase font-extrabold text-blue-800 dark:text-sky-300">Females</div>
-                    <div className="text-sm font-black text-blue-950 dark:text-white mt-0.5">{s.females}</div>
+                  {/* Females - Pink / Rose */}
+                  <div className="bg-pink-50/60 dark:bg-pink-950/40 p-1.5 rounded-md border border-pink-200/60 dark:border-pink-800/60">
+                    <div className="text-[10px] uppercase font-black text-pink-700 dark:text-pink-300">Females (F)</div>
+                    <div className="text-sm font-black text-pink-950 dark:text-pink-100 mt-0.5">{s.females}</div>
                   </div>
 
-                  <div className="border-l border-blue-200/80 dark:border-blue-800 pl-1">
-                    <div className="text-[10px] uppercase font-extrabold text-blue-900 dark:text-sky-200">Total</div>
-                    <div className="text-sm font-black text-sky-600 dark:text-sky-300 mt-0.5">{s.total}</div>
+                  {/* Total - Emerald */}
+                  <div className="bg-emerald-50/60 dark:bg-emerald-950/40 p-1.5 rounded-md border border-emerald-200/60 dark:border-emerald-800/60">
+                    <div className="text-[10px] uppercase font-black text-emerald-700 dark:text-emerald-300">Total</div>
+                    <div className="text-sm font-black text-emerald-950 dark:text-emerald-100 mt-0.5">{s.total}</div>
                   </div>
                 </div>
 
-                {/* Male/Female Distribution Mini Bar */}
+                {/* Male/Female Distribution Split Bar */}
                 {s.total > 0 && (
                   <div className="mt-2.5">
-                    <div className="w-full bg-blue-800 dark:bg-blue-700 h-1.5 rounded-full overflow-hidden flex">
+                    <div className="w-full bg-pink-500 h-2 rounded-full overflow-hidden flex border border-slate-200/60 dark:border-slate-800">
                       <div
-                        className="bg-sky-400 h-full transition-all"
+                        className="bg-cyan-500 h-full transition-all"
                         style={{ width: `${maleRatio}%` }}
-                        title={`${maleRatio}% Males`}
+                        title={`Males: ${s.males} (${maleRatio}%) | Females: ${s.females} (${100 - maleRatio}%)`}
                       />
                     </div>
                   </div>
@@ -114,13 +117,13 @@ export const DistrictCardsGrid: React.FC<DistrictCardsGridProps> = ({
               </div>
 
               {/* Card Footer Buttons */}
-              <div className="px-4 py-2.5 bg-blue-50/40 dark:bg-blue-900/20 rounded-b-xl flex items-center justify-between text-xs">
+              <div className="px-4 py-2.5 bg-slate-50/60 dark:bg-blue-900/20 rounded-b-xl flex items-center justify-between text-xs">
                 <button
                   id={`btn-filter-district-${s.district.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
                   onClick={() =>
                     onSelectFilterDistrict(isSelected ? null : s.district)
                   }
-                  className="font-semibold text-blue-800 dark:text-sky-300 hover:text-blue-950 dark:hover:text-white cursor-pointer"
+                  className="font-bold text-slate-700 dark:text-sky-300 hover:text-indigo-600 dark:hover:text-white cursor-pointer"
                 >
                   {isSelected ? 'Reset Filter' : 'Filter Table'}
                 </button>
