@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AttendanceRecord, DistrictName } from '../types';
-import { LAGOS_DISTRICTS, SERVICE_TYPES } from '../constants';
+import { LAGOS_DISTRICTS, SERVICE_TYPES, isSunday } from '../constants';
 import { X, Check, Calculator, AlertCircle, User, UserCheck, Shield } from 'lucide-react';
 
 interface AttendanceFormModalProps {
@@ -62,6 +62,10 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
       setErrorMsg('Please select a valid district.');
       return;
     }
+    if (!isSunday(date)) {
+      setErrorMsg('Collation is strictly permitted on Sundays only. Please select a valid Sunday date.');
+      return;
+    }
     if (maleNum === 0 && femaleNum === 0) {
       setErrorMsg('Attendance cannot be zero for both male and female.');
       return;
@@ -102,7 +106,7 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
           <div>
             <h3 className="text-lg font-black text-white flex items-center">
               <Shield className="w-5 h-5 mr-2 text-indigo-400" />
-              {editingRecord ? 'Edit Attendance Record' : 'Collate Attendance Record'}
+              {editingRecord ? 'Edit Attendance Record' : 'Collate Sunday Attendance'}
             </h3>
             <p className="text-xs text-slate-300 mt-0.5 font-medium">
               Enter participant counts for AYAC Lagos district
@@ -149,7 +153,7 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label id="lbl-service-date" htmlFor="input-service-date" className="block text-xs font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-1.5">
-                Attendance Date <span className="text-indigo-500">*</span>
+                Sunday Date <span className="text-indigo-500">*</span>
               </label>
               <input
                 id="input-service-date"
@@ -159,6 +163,9 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
                 className="w-full bg-slate-50 dark:bg-slate-800/80 border-2 border-slate-300 dark:border-slate-700 rounded-lg px-3.5 py-2 text-sm text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none font-bold"
                 required
               />
+              <p className="text-[10px] text-indigo-600 dark:text-indigo-400 font-bold mt-1">
+                Must be a Sunday date.
+              </p>
             </div>
 
             <div>

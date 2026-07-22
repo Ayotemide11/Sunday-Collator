@@ -17,14 +17,25 @@ export const SERVICE_TYPES = [
   'Word Explorer',
 ];
 
+// Helper to get nearest past or present Sunday date string YYYY-MM-DD
+export function getRecentSundayDate(fromStr?: string): string {
+  const refDate = fromStr ? new Date(fromStr + 'T00:00:00') : new Date();
+  const day = refDate.getDay(); // 0 is Sunday
+  const diff = refDate.getDate() - day; // Adjust to Sunday
+  const sunday = new Date(refDate.setDate(diff));
+  return sunday.toISOString().split('T')[0];
+}
+
+// Helper to check if a date string YYYY-MM-DD is a Sunday
+export function isSunday(dateStr: string): boolean {
+  if (!dateStr) return false;
+  const d = new Date(dateStr + 'T00:00:00');
+  return d.getDay() === 0;
+}
+
 // Helper to get today's date string YYYY-MM-DD
 export function getTodayDate(): string {
   return new Date().toISOString().split('T')[0];
-}
-
-// Helper for backward compatibility
-export function getRecentSundayDate(): string {
-  return getTodayDate();
 }
 
 export const SAMPLE_RECORDS: AttendanceRecord[] = [
@@ -34,7 +45,7 @@ export const SAMPLE_RECORDS: AttendanceRecord[] = [
     males: 85,
     females: 110,
     total: 195,
-    date: getTodayDate(),
+    date: getRecentSundayDate(),
     serviceType: 'AYAC 2026',
     reportedBy: 'Bro. Samuel (Youth Sec)',
     stationName: 'Central Cathedral',
@@ -47,7 +58,7 @@ export const SAMPLE_RECORDS: AttendanceRecord[] = [
     males: 52,
     females: 68,
     total: 120,
-    date: getTodayDate(),
+    date: getRecentSundayDate(),
     serviceType: 'AYAC 2026',
     reportedBy: 'Sis. Funke',
     stationName: 'Igbogbo Central Station',
@@ -60,7 +71,7 @@ export const SAMPLE_RECORDS: AttendanceRecord[] = [
     males: 38,
     females: 42,
     total: 80,
-    date: getTodayDate(),
+    date: getRecentSundayDate(),
     serviceType: 'AYAC 2026',
     reportedBy: 'Bro. David',
     stationName: 'Ijede Main Branch',
@@ -73,7 +84,7 @@ export const SAMPLE_RECORDS: AttendanceRecord[] = [
     males: 45,
     females: 55,
     total: 100,
-    date: getTodayDate(),
+    date: getRecentSundayDate(),
     serviceType: 'Youth Aflame',
     reportedBy: 'Sis. Grace',
     stationName: 'Irawo Youth Center',
@@ -86,7 +97,7 @@ export const SAMPLE_RECORDS: AttendanceRecord[] = [
     males: 60,
     females: 72,
     total: 132,
-    date: getTodayDate(),
+    date: getRecentSundayDate(),
     serviceType: 'Word Explorer',
     reportedBy: 'Bro. John',
     stationName: 'Badagry Central',
@@ -99,7 +110,7 @@ export const SAMPLE_RECORDS: AttendanceRecord[] = [
     males: 42,
     females: 48,
     total: 90,
-    date: getTodayDate(),
+    date: getRecentSundayDate(),
     serviceType: 'AYAC 2026',
     reportedBy: 'Bro. Emmanuel',
     stationName: 'Morogbo Fellowship Station',
