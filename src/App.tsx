@@ -1,13 +1,12 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { AttendanceRecord, DistrictName } from './types';
 import {
-  loadLocalCache,
-  saveLocalCache,
-  fetchServerRecords,
-  saveRecordToServer,
-  deleteRecordFromServer,
-  resetServerRecordsToZero,
-  syncLocalRecordsWithServer,
+  subscribeToAttendanceRecords,
+  saveRecordToFirestore,
+  deleteRecordFromFirestore,
+  resetFirestoreRecordsToZero,
+} from './utils/firebaseStorage';
+import {
   calculateCollatedStats,
   getDistrictSummaries,
   exportToCSV,
@@ -29,15 +28,16 @@ import {
   CheckCircle2,
   Building2,
   Radio,
+  Flame,
 } from 'lucide-react';
 
 export default function App() {
-  const [records, setRecords] = useState<AttendanceRecord[]>(() => loadLocalCache());
+  const [records, setRecords] = useState<AttendanceRecord[]>([]);
   const [selectedDate, setSelectedDate] = useState<string>(getRecentSundayDate());
   const [selectedFilterDistrict, setSelectedFilterDistrict] = useState<DistrictName | null>(null);
-  const [isLiveConnected, setIsLiveConnected] = useState<boolean>(true);
+  const [isFirebaseConnected, setIsFirebaseConnected] = useState<boolean>(true);
 
-  // Appearance theme state
+  // Appearance theme state: restored initial theme preference
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     const savedTheme = localStorage.getItem('ayac_theme');
     return (savedTheme === 'dark' || savedTheme === 'light') ? savedTheme : 'light';
@@ -51,8 +51,6 @@ export default function App() {
   const [isAdminPinOpen, setIsAdminPinOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'dashboard' | 'table' | 'analytics'>('dashboard');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-
-  const initialSyncDone = useRef(false);
 
   // Apply theme class to root
   useEffect(() => {
@@ -74,100 +72,61 @@ export default function App() {
     setTimeout(() => setToastMessage(null), 3000);
   };
 
-  // Real-time synchronization initialization (SSE + Polling Fallback)
+  // Real-time synchronization initialization with Firebase Firestore backend
   useEffect(() => {
-    // Initial fetch and sync
-    const initServerSync = async () => {
-      const local = loadLocalCache();
-      const synced = await syncLocalRecordsWithServer(local);
-      setRecords(synced);
-      initialSyncDone.current = true;
-    };
-
-    initServerSync();
-
-    // Subscribe to real-time Server-Sent Events (SSE)
-    let eventSource: EventSource | null = null;
-
-    const setupSSE = () => {
-      try {
-        eventSource = new EventSource('/api/records/stream');
-
-        eventSource.onopen = () => {
-          setIsLiveConnected(true);
-        };
-
-        eventSource.onmessage = (event) => {
-          try {
-            const data = JSON.parse(event.data);
-            if (Array.isArray(data.records)) {
-              setRecords(data.records);
-              saveLocalCache(data.records);
-
-              // Notify user if updated by external submission
-              if (
-                initialSyncDone.current &&
-                (data.type === 'upsert' || data.type === 'delete' || data.type === 'reset')
-              ) {
-                showToast('Collation updated in real-time!');
-              }
-            }
-          } catch (e) {
-            console.error('Error parsing SSE event:', e);
-          }
-        };
-
-        eventSource.onerror = () => {
-          setIsLiveConnected(false);
-          eventSource?.close();
-          // Retry connection after 3 seconds
-          setTimeout(setupSSE, 3000);
-        };
-      } catch (err) {
-        console.warn('SSE not supported or connection failed:', err);
-        setIsLiveConnected(false);
+    const unsubscribe = subscribeToAttendanceRecords(
+      (updatedRecords) => {
+        setRecords(updatedRecords);
+        setIsFirebaseConnected(true);
+      },
+      (error) => {
+        console.error('Firestore real-time sync error:', error);
+        setIsFirebaseConnected(false);
       }
-    };
-
-    setupSSE();
-
-    // Safety polling fallback every 5 seconds
-    const intervalId = setInterval(async () => {
-      const latest = await fetchServerRecords();
-      setRecords(latest);
-    }, 5000);
+    );
 
     return () => {
-      eventSource?.close();
-      clearInterval(intervalId);
+      unsubscribe();
     };
   }, []);
 
-  // Save new or updated record to backend server
+  // Save new or updated record to Firestore backend
   const handleSaveRecord = async (
     data: Omit<AttendanceRecord, 'id' | 'createdAt' | 'updatedAt'>,
     id?: string
   ) => {
-    const updated = await saveRecordToServer(data, id);
-    setRecords(updated);
-    showToast(id ? `Updated record for ${data.district}` : `Logged attendance for ${data.district}!`);
-  };
-
-  // Delete record on server
-  const handleDeleteRecord = async (id: string) => {
-    const target = records.find((r) => r.id === id);
-    const updated = await deleteRecordFromServer(id);
-    setRecords(updated);
-    if (target) {
-      showToast(`Deleted record for ${target.district}`);
+    try {
+      await saveRecordToFirestore(data, id);
+      showToast(id ? `Updated record for ${data.district}` : `Logged attendance for ${data.district}!`);
+    } catch (err) {
+      console.error('Failed to save to Firestore:', err);
+      showToast('Error saving record to Firebase.');
     }
   };
 
-  // Reset all figures to zero on server
+  // Delete record from Firestore backend
+  const handleDeleteRecord = async (id: string) => {
+    const target = records.find((r) => r.id === id);
+    try {
+      await deleteRecordFromFirestore(id);
+      if (target) {
+        showToast(`Deleted record for ${target.district}`);
+      }
+    } catch (err) {
+      console.error('Failed to delete from Firestore:', err);
+      showToast('Error deleting record.');
+    }
+  };
+
+  // Reset all figures to zero in Firestore backend
   const handleResetToZero = async () => {
-    const cleared = await resetServerRecordsToZero();
-    setRecords(cleared);
-    showToast('All collation figures reset to zero.');
+    try {
+      await resetFirestoreRecordsToZero();
+      showToast('All collation figures reset to zero on Firebase Firestore.');
+    } catch (err) {
+      console.error('Failed to reset Firestore records:', err);
+      showToast('Error resetting records.');
+    }
   };
 
   // Open Form modal for specific district
@@ -228,22 +187,22 @@ export default function App() {
         onResetToZero={() => setIsAdminPinOpen(true)}
         theme={theme}
         onToggleTheme={toggleTheme}
-        isLiveConnected={isLiveConnected}
+        isLiveConnected={isFirebaseConnected}
       />
 
       {/* Main App Canvas */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         
-        {/* Real-time Multi-User Live Banner */}
+        {/* Firebase Firestore Real-time Banner */}
         <div className="bg-sky-500/10 dark:bg-blue-900/50 border border-sky-400/30 dark:border-blue-800 rounded-xl p-3 px-4 flex flex-wrap items-center justify-between gap-2 text-xs font-semibold text-blue-950 dark:text-sky-200 shadow-2xs">
           <div className="flex items-center space-x-2">
-            <Radio className="w-4 h-4 text-sky-500 animate-pulse flex-shrink-0" />
+            <Flame className="w-4 h-4 text-sky-500 flex-shrink-0 animate-pulse" />
             <span>
-              <strong className="font-extrabold text-blue-950 dark:text-white">Real-Time Multi-User Collation Active:</strong> Figures logged by users from any device or IP address are collated and synchronized live.
+              <strong className="font-extrabold text-blue-950 dark:text-white">Firebase Firestore Backend Active:</strong> All Sunday collation figures logged from different IP addresses & devices sync instantly in real time.
             </span>
           </div>
-          <span className="text-[11px] bg-sky-100 dark:bg-sky-500/20 text-sky-700 dark:text-sky-300 font-bold px-2.5 py-0.5 rounded border border-sky-200 dark:border-sky-500/30">
-            Instant SSE Sync
+          <span className="text-[11px] bg-sky-100 dark:bg-sky-500/20 text-sky-700 dark:text-sky-300 font-bold px-2.5 py-0.5 rounded border border-sky-200 dark:border-sky-500/30 flex items-center">
+            <Radio className="w-3 h-3 mr-1 text-sky-500" /> Live Firestore DB
           </span>
         </div>
 
