@@ -3,39 +3,127 @@ import { LAGOS_DISTRICTS, SAMPLE_RECORDS, getRecentSundayDate } from '../constan
 
 const STORAGE_KEY = 'ayac_lagos_sunday_records_v1';
 
-export function loadRecords(): AttendanceRecord[] {
+// Local storage fallback cache helpers
+export function loadLocalCache(): AttendanceRecord[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw === null) {
-      // Seed initial sample data only on first launch ever
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(SAMPLE_RECORDS));
-      return SAMPLE_RECORDS;
-    }
+    if (!raw) return [];
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed) ? parsed : [];
   } catch (err) {
-    console.error('Error loading records from storage:', err);
+    console.error('Error loading local cache:', err);
     return [];
   }
 }
 
-export function saveRecords(records: AttendanceRecord[]): void {
+export function saveLocalCache(records: AttendanceRecord[]): void {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
   } catch (err) {
-    console.error('Error saving records to storage:', err);
+    console.error('Error saving local cache:', err);
   }
 }
 
-export function resetToSampleData(): AttendanceRecord[] {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(SAMPLE_RECORDS));
-  return SAMPLE_RECORDS;
+// Full-Stack Server API methods with real-time sync
+
+export async function fetchServerRecords(): Promise<AttendanceRecord[]> {
+  try {
+    const res = await fetch('/api/records');
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data.records)) {
+        saveLocalCache(data.records);
+        return data.records;
+      }
+    }
+  } catch (err) {
+    console.warn('Backend fetch failed, falling back to local cache:', err);
+  }
+  return loadLocalCache();
 }
 
-export function clearAllRecordsToZero(): AttendanceRecord[] {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
+export async function saveRecordToServer(
+  recordData: Omit<AttendanceRecord, 'id' | 'createdAt' | 'updatedAt'>,
+  id?: string
+): Promise<AttendanceRecord[]> {
+  try {
+    const res = await fetch('/api/records', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...recordData, id }),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data.records)) {
+        saveLocalCache(data.records);
+        return data.records;
+      }
+    }
+  } catch (err) {
+    console.error('Failed to save record to server:', err);
+  }
+  return loadLocalCache();
+}
+
+export async function deleteRecordFromServer(id: string): Promise<AttendanceRecord[]> {
+  try {
+    const res = await fetch(`/api/records/${id}`, {
+      method: 'DELETE',
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data.records)) {
+        saveLocalCache(data.records);
+        return data.records;
+      }
+    }
+  } catch (err) {
+    console.error('Failed to delete record from server:', err);
+  }
+  return loadLocalCache();
+}
+
+export async function resetServerRecordsToZero(): Promise<AttendanceRecord[]> {
+  try {
+    const res = await fetch('/api/records/reset', {
+      method: 'POST',
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data.records)) {
+        saveLocalCache(data.records);
+        return data.records;
+      }
+    }
+  } catch (err) {
+    console.error('Failed to reset records on server:', err);
+  }
+  saveLocalCache([]);
   return [];
 }
+
+export async function syncLocalRecordsWithServer(localRecords: AttendanceRecord[]): Promise<AttendanceRecord[]> {
+  if (!localRecords.length) return fetchServerRecords();
+  try {
+    const res = await fetch('/api/records/sync', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ clientRecords: localRecords }),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data.records)) {
+        saveLocalCache(data.records);
+        return data.records;
+      }
+    }
+  } catch (err) {
+    console.warn('Sync failed:', err);
+  }
+  return fetchServerRecords();
+}
+
+// Collated Statistics & Reporting Helpers
 
 export function calculateCollatedStats(
   records: AttendanceRecord[],
@@ -53,7 +141,7 @@ export function calculateCollatedStats(
   filtered.forEach((r) => {
     totalMales += Number(r.males) || 0;
     totalFemales += Number(r.females) || 0;
-    reportingDistricts.add(r.district);
+    reportingDistricts.add(r.district as DistrictName);
   });
 
   const grandTotal = totalMales + totalFemales;
@@ -90,13 +178,13 @@ export function getDistrictSummaries(
   });
 
   records.forEach((r) => {
-    const summary = map.get(r.district);
+    const summary = map.get(r.district as DistrictName);
     if (!summary) return;
 
     if (r.date === selectedDate) {
       summary.males += Number(r.males) || 0;
       summary.females += Number(r.females) || 0;
-      summary.total += Number(r.males + r.females) || 0;
+      summary.total += Number(r.males) + Number(r.females);
       summary.recordCount += 1;
       summary.hasReportedCurrentSunday = true;
       summary.lastReportedDate = r.date;

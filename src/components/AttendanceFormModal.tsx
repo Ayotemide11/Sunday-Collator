@@ -85,23 +85,23 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
   };
 
   return (
-    <div id="attendance-form-modal-overlay" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-xs overflow-y-auto">
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-lg overflow-hidden my-8 animate-in fade-in duration-200">
+    <div id="attendance-form-modal-overlay" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-blue-950/75 backdrop-blur-xs overflow-y-auto">
+      <div className="bg-white dark:bg-blue-950 rounded-2xl border border-blue-100 dark:border-blue-800 shadow-2xl w-full max-w-lg overflow-hidden my-8 animate-in fade-in duration-200">
         
         {/* Modal Header */}
-        <div className="bg-slate-900 text-white px-6 py-4 flex items-center justify-between border-b border-slate-800">
+        <div className="bg-blue-950 text-white px-6 py-4 flex items-center justify-between border-b border-blue-900">
           <div>
-            <h3 className="text-lg font-bold">
+            <h3 className="text-lg font-black text-white">
               {editingRecord ? 'Edit Attendance Record' : 'Collate Sunday Attendance'}
             </h3>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs text-sky-300 mt-0.5">
               Enter participant counts for AYAC Lagos district
             </p>
           </div>
           <button
             id="btn-close-form-modal"
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
+            className="text-sky-300 hover:text-white p-1 rounded-lg hover:bg-blue-900 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -110,25 +110,25 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
         {/* Modal Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
           {errorMsg && (
-            <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg flex items-center space-x-2">
-              <AlertCircle className="w-4 h-4 flex-shrink-0" />
+            <div className="p-3 bg-blue-900/40 border border-sky-400/50 text-sky-200 text-xs rounded-lg flex items-center space-x-2 font-semibold">
+              <AlertCircle className="w-4 h-4 flex-shrink-0 text-sky-400" />
               <span>{errorMsg}</span>
             </div>
           )}
 
           {/* District Selector - Dropdown */}
           <div>
-            <label id="lbl-district" htmlFor="select-district" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-              District <span className="text-rose-500">*</span>
+            <label id="lbl-district" htmlFor="select-district" className="block text-xs font-extrabold text-blue-950 dark:text-sky-200 uppercase tracking-wider mb-1.5">
+              District <span className="text-sky-500">*</span>
             </label>
             <select
               id="select-district"
               value={district}
               onChange={(e) => setDistrict(e.target.value as DistrictName)}
-              className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3.5 py-2.5 text-sm font-medium text-slate-900 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none cursor-pointer"
+              className="w-full bg-blue-50/50 dark:bg-blue-900/60 border border-blue-200 dark:border-blue-800 rounded-lg px-3.5 py-2.5 text-sm font-bold text-blue-950 dark:text-sky-100 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none cursor-pointer"
             >
               {LAGOS_DISTRICTS.map((dist) => (
-                <option key={dist} value={dist}>
+                <option key={dist} value={dist} className="dark:bg-blue-950 text-blue-950 dark:text-sky-100">
                   {dist}
                 </option>
               ))}
@@ -138,31 +138,31 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
           {/* Date & Service Type */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label id="lbl-service-date" htmlFor="input-service-date" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                Sunday Date <span className="text-rose-500">*</span>
+              <label id="lbl-service-date" htmlFor="input-service-date" className="block text-xs font-extrabold text-blue-950 dark:text-sky-200 uppercase tracking-wider mb-1.5">
+                Sunday Date <span className="text-sky-500">*</span>
               </label>
               <input
                 id="input-service-date"
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3.5 py-2 text-sm text-slate-900 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none"
+                className="w-full bg-blue-50/50 dark:bg-blue-900/60 border border-blue-200 dark:border-blue-800 rounded-lg px-3.5 py-2 text-sm text-blue-950 dark:text-sky-100 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none font-semibold"
                 required
               />
             </div>
 
             <div>
-              <label id="lbl-service-type" htmlFor="select-service-type" className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+              <label id="lbl-service-type" htmlFor="select-service-type" className="block text-xs font-extrabold text-blue-950 dark:text-sky-200 uppercase tracking-wider mb-1.5">
                 Service Event
               </label>
               <select
                 id="select-service-type"
                 value={serviceType}
                 onChange={(e) => setServiceType(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm text-slate-900 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none cursor-pointer"
+                className="w-full bg-blue-50/50 dark:bg-blue-900/60 border border-blue-200 dark:border-blue-800 rounded-lg px-3 py-2 text-sm text-blue-950 dark:text-sky-100 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none cursor-pointer font-semibold"
               >
                 {SERVICE_TYPES.map((type) => (
-                  <option key={type} value={type}>
+                  <option key={type} value={type} className="dark:bg-blue-950 text-blue-950 dark:text-sky-100">
                     {type}
                   </option>
                 ))}
@@ -171,20 +171,20 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
           </div>
 
           {/* Attendance Counts Inputs */}
-          <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-              <span className="text-xs font-bold uppercase text-slate-700 flex items-center">
-                <Calculator className="w-4 h-4 mr-1 text-amber-600" /> Attendance Collations
+          <div className="p-4 bg-blue-50/50 dark:bg-blue-900/40 border border-blue-100 dark:border-blue-800 rounded-xl space-y-4">
+            <div className="flex items-center justify-between border-b border-blue-100 dark:border-blue-800 pb-2">
+              <span className="text-xs font-extrabold uppercase text-blue-950 dark:text-sky-200 flex items-center">
+                <Calculator className="w-4 h-4 mr-1.5 text-sky-600 dark:text-sky-400" /> Attendance Collations
               </span>
-              <span className="text-xs font-semibold text-amber-700 bg-amber-100 px-2 py-0.5 rounded">
+              <span className="text-xs font-bold text-blue-950 dark:text-sky-200 bg-sky-100 dark:bg-sky-500/20 px-2 py-0.5 rounded border border-sky-300 dark:border-sky-500/30">
                 Dynamic Total
               </span>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label id="lbl-males-count" htmlFor="input-males-count" className="block text-xs font-semibold text-blue-700 mb-1">
-                  Number of Males <span className="text-rose-500">*</span>
+                <label id="lbl-males-count" htmlFor="input-males-count" className="block text-xs font-extrabold text-sky-600 dark:text-sky-400 mb-1">
+                  Number of Males <span className="text-sky-500">*</span>
                 </label>
                 <input
                   id="input-males-count"
@@ -192,15 +192,15 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
                   min="0"
                   value={males}
                   onChange={(e) => setMales(e.target.value)}
-                  className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-lg font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  className="w-full bg-white dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg px-3 py-2 text-lg font-black text-blue-950 dark:text-sky-100 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none"
                   placeholder="0"
                   required
                 />
               </div>
 
               <div>
-                <label id="lbl-females-count" htmlFor="input-females-count" className="block text-xs font-semibold text-rose-700 mb-1">
-                  Number of Females <span className="text-rose-500">*</span>
+                <label id="lbl-females-count" htmlFor="input-females-count" className="block text-xs font-extrabold text-blue-900 dark:text-sky-200 mb-1">
+                  Number of Females <span className="text-sky-500">*</span>
                 </label>
                 <input
                   id="input-females-count"
@@ -208,7 +208,7 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
                   min="0"
                   value={females}
                   onChange={(e) => setFemales(e.target.value)}
-                  className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-lg font-bold text-slate-900 focus:ring-2 focus:ring-rose-500 focus:border-rose-500 outline-none"
+                  className="w-full bg-white dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg px-3 py-2 text-lg font-black text-blue-950 dark:text-sky-100 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none"
                   placeholder="0"
                   required
                 />
@@ -216,14 +216,14 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
             </div>
 
             {/* Calculated Total Visual Banner */}
-            <div className="bg-slate-900 text-white rounded-lg p-3 flex items-center justify-between">
+            <div className="bg-blue-950 text-white rounded-lg p-3 flex items-center justify-between border border-blue-900">
               <div>
-                <div className="text-[10px] uppercase tracking-wider text-slate-400 font-medium">Calculated Grand Total</div>
-                <div className="text-xs text-slate-300 mt-0.5">
+                <div className="text-[10px] uppercase tracking-wider text-sky-300 font-bold">Calculated Grand Total</div>
+                <div className="text-xs text-sky-200 mt-0.5">
                   {maleNum} Males + {femaleNum} Females
                 </div>
               </div>
-              <div className="text-2xl font-black text-amber-400">
+              <div className="text-2xl font-black text-sky-400">
                 {computedTotal}
               </div>
             </div>
@@ -232,7 +232,7 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
           {/* Optional Meta fields */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label id="lbl-reported-by" htmlFor="input-reported-by" className="block text-xs font-medium text-slate-600 mb-1">
+              <label id="lbl-reported-by" htmlFor="input-reported-by" className="block text-xs font-bold text-blue-900 dark:text-sky-300 mb-1">
                 Reported By (Optional)
               </label>
               <input
@@ -241,12 +241,12 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
                 value={reportedBy}
                 onChange={(e) => setReportedBy(e.target.value)}
                 placeholder="e.g. Bro. David (Youth Rep)"
-                className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:ring-1 focus:ring-slate-400 outline-none"
+                className="w-full bg-white dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg px-3 py-2 text-xs text-blue-950 dark:text-sky-100 focus:ring-1 focus:ring-sky-500 outline-none font-medium"
               />
             </div>
 
             <div>
-              <label id="lbl-remarks" htmlFor="input-remarks" className="block text-xs font-medium text-slate-600 mb-1">
+              <label id="lbl-remarks" htmlFor="input-remarks" className="block text-xs font-bold text-blue-900 dark:text-sky-300 mb-1">
                 Remarks / Notes (Optional)
               </label>
               <input
@@ -255,25 +255,25 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
                 value={remarks}
                 onChange={(e) => setRemarks(e.target.value)}
                 placeholder="e.g. High turnout from choir"
-                className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:ring-1 focus:ring-slate-400 outline-none"
+                className="w-full bg-white dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg px-3 py-2 text-xs text-blue-950 dark:text-sky-100 focus:ring-1 focus:ring-sky-500 outline-none font-medium"
               />
             </div>
           </div>
 
           {/* Form Action Buttons */}
-          <div className="flex items-center justify-end space-x-3 pt-2 border-t border-slate-100">
+          <div className="flex items-center justify-end space-x-3 pt-2 border-t border-blue-100 dark:border-blue-900">
             <button
               id="btn-cancel-form"
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
+              className="px-4 py-2 text-sm font-bold text-blue-900 dark:text-sky-300 hover:text-blue-950 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors cursor-pointer"
             >
               Cancel
             </button>
             <button
               id="btn-submit-attendance"
               type="submit"
-              className="inline-flex items-center px-5 py-2 rounded-lg text-sm font-semibold text-slate-950 bg-amber-400 hover:bg-amber-300 transition-colors shadow-sm cursor-pointer"
+              className="inline-flex items-center px-5 py-2 rounded-lg text-sm font-black text-blue-950 bg-sky-400 hover:bg-sky-300 transition-colors shadow-sm cursor-pointer"
             >
               <Check className="w-4 h-4 mr-1.5" />
               <span>{editingRecord ? 'Update Record' : 'Save Attendance'}</span>

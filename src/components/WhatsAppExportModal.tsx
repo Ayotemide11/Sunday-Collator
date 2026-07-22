@@ -35,22 +35,22 @@ export const WhatsAppExportModal: React.FC<WhatsAppExportModalProps> = ({
   };
 
   return (
-    <div id="whatsapp-modal-overlay" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-xs">
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-xl overflow-hidden animate-in fade-in duration-200">
+    <div id="whatsapp-modal-overlay" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-blue-950/75 backdrop-blur-xs">
+      <div className="bg-white dark:bg-blue-950 rounded-2xl border border-blue-100 dark:border-blue-900 shadow-2xl w-full max-w-xl overflow-hidden animate-in fade-in duration-200">
         
         {/* Modal Header */}
-        <div className="bg-emerald-950 text-white px-6 py-4 flex items-center justify-between border-b border-emerald-900">
+        <div className="bg-blue-950 text-white px-6 py-4 flex items-center justify-between border-b border-blue-900">
           <div className="flex items-center space-x-2">
-            <Share2 className="w-5 h-5 text-emerald-400" />
+            <Share2 className="w-5 h-5 text-sky-400" />
             <div>
-              <h3 className="text-lg font-bold">WhatsApp Sunday Broadcast</h3>
-              <p className="text-xs text-emerald-300">Format attendance for executive & group chat broadcast</p>
+              <h3 className="text-lg font-black text-white">WhatsApp Sunday Broadcast</h3>
+              <p className="text-xs text-sky-300">Format attendance for executive & group chat broadcast</p>
             </div>
           </div>
           <button
             id="btn-close-whatsapp-modal"
             onClick={onClose}
-            className="text-emerald-300 hover:text-white p-1 rounded-lg hover:bg-emerald-900 transition-colors cursor-pointer"
+            className="text-sky-300 hover:text-white p-1 rounded-lg hover:bg-blue-900 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -60,9 +60,9 @@ export const WhatsAppExportModal: React.FC<WhatsAppExportModalProps> = ({
         <div className="p-6 space-y-4">
           
           {/* Date Picker Selector */}
-          <div className="flex items-center justify-between bg-slate-50 p-3 rounded-lg border border-slate-200">
-            <label htmlFor="input-whatsapp-date" className="text-xs font-semibold text-slate-700 flex items-center">
-              <Calendar className="w-4 h-4 mr-1.5 text-amber-600" />
+          <div className="flex items-center justify-between bg-blue-50/60 dark:bg-blue-900/40 p-3 rounded-lg border border-blue-100 dark:border-blue-800">
+            <label htmlFor="input-whatsapp-date" className="text-xs font-bold text-blue-950 dark:text-sky-200 flex items-center">
+              <Calendar className="w-4 h-4 mr-1.5 text-sky-600 dark:text-sky-400" />
               Report Date:
             </label>
             <input
@@ -70,22 +70,22 @@ export const WhatsAppExportModal: React.FC<WhatsAppExportModalProps> = ({
               type="date"
               value={reportDate}
               onChange={(e) => setReportDate(e.target.value)}
-              className="bg-white border border-slate-300 text-xs font-semibold text-slate-900 rounded-md px-2.5 py-1 focus:ring-1 focus:ring-amber-500 cursor-pointer"
+              className="bg-white dark:bg-blue-950 border border-blue-200 dark:border-blue-800 text-xs font-bold text-blue-950 dark:text-sky-100 rounded-md px-2.5 py-1 focus:ring-1 focus:ring-sky-500 cursor-pointer"
             />
           </div>
 
           {/* Formatted Text Preview Container */}
           <div className="relative">
-            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1 flex items-center justify-between">
+            <div className="text-xs font-extrabold text-blue-900 dark:text-sky-300 uppercase tracking-wider mb-1 flex items-center justify-between">
               <span>Preview Text (Ready for WhatsApp)</span>
-              {copied && <span className="text-emerald-600 font-bold lowercase">Copied to clipboard!</span>}
+              {copied && <span className="text-sky-400 font-bold lowercase">Copied to clipboard!</span>}
             </div>
             <textarea
               id="textarea-whatsapp-preview"
               readOnly
               value={rawReportText}
               rows={12}
-              className="w-full bg-slate-900 text-emerald-300 font-mono text-xs p-4 rounded-xl border border-slate-800 focus:outline-none resize-none shadow-inner leading-relaxed"
+              className="w-full bg-blue-950 text-sky-200 font-mono text-xs p-4 rounded-xl border border-blue-900 focus:outline-none resize-none shadow-inner leading-relaxed"
             />
           </div>
 
@@ -94,20 +94,20 @@ export const WhatsAppExportModal: React.FC<WhatsAppExportModalProps> = ({
             <button
               id="btn-copy-whatsapp-text"
               onClick={handleCopy}
-              className={`w-full sm:w-auto inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-semibold transition-all shadow-sm cursor-pointer ${
+              className={`w-full sm:w-auto inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-black transition-all shadow-sm cursor-pointer ${
                 copied
-                  ? 'bg-emerald-600 text-white'
-                  : 'bg-slate-900 text-white hover:bg-slate-800'
+                  ? 'bg-sky-500 text-blue-950 border border-sky-400'
+                  : 'bg-blue-900 text-sky-100 hover:bg-blue-800 border border-blue-800'
               }`}
             >
               {copied ? (
                 <>
-                  <Check className="w-4 h-4 mr-2 text-emerald-300" />
+                  <Check className="w-4 h-4 mr-2 text-blue-950" />
                   <span>Text Copied!</span>
                 </>
               ) : (
                 <>
-                  <Copy className="w-4 h-4 mr-2" />
+                  <Copy className="w-4 h-4 mr-2 text-sky-300" />
                   <span>Copy Report Text</span>
                 </>
               )}
@@ -116,7 +116,7 @@ export const WhatsAppExportModal: React.FC<WhatsAppExportModalProps> = ({
             <button
               id="btn-share-whatsapp-direct"
               onClick={handleOpenWhatsApp}
-              className="w-full sm:w-auto inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-semibold text-emerald-950 bg-emerald-400 hover:bg-emerald-300 transition-colors shadow-sm cursor-pointer"
+              className="w-full sm:w-auto inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-black text-blue-950 bg-sky-400 hover:bg-sky-300 transition-colors shadow-sm cursor-pointer"
             >
               <Share2 className="w-4 h-4 mr-2" />
               <span>Share to WhatsApp</span>
