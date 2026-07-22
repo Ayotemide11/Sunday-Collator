@@ -113,39 +113,20 @@ async function startServer() {
           : r
       );
     } else {
-      // Check if existing record exists for same district & date
-      const existingIdx = recordsStore.findIndex(
-        (r) => r.district === data.district && r.date === data.date
-      );
-
-      if (existingIdx >= 0) {
-        recordsStore[existingIdx] = {
-          ...recordsStore[existingIdx],
-          district: data.district,
-          males: maleNum,
-          females: femaleNum,
-          total: computedTotal,
-          serviceType: data.serviceType || 'AYAC 2026',
-          reportedBy: data.reportedBy || '',
-          remarks: data.remarks || '',
-          updatedAt: Date.now(),
-        };
-      } else {
-        const newRecord: AttendanceRecord = {
-          id: `rec-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
-          district: data.district,
-          males: maleNum,
-          females: femaleNum,
-          total: computedTotal,
-          date: data.date,
-          serviceType: data.serviceType || 'AYAC 2026',
-          reportedBy: data.reportedBy || '',
-          remarks: data.remarks || '',
-          createdAt: Date.now(),
-          updatedAt: Date.now(),
-        };
-        recordsStore = [newRecord, ...recordsStore];
-      }
+      const newRecord: AttendanceRecord = {
+        id: `rec-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+        district: data.district,
+        males: maleNum,
+        females: femaleNum,
+        total: computedTotal,
+        date: data.date,
+        serviceType: data.serviceType || 'AYAC 2026',
+        reportedBy: data.reportedBy || '',
+        remarks: data.remarks || '',
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+      };
+      recordsStore = [newRecord, ...recordsStore];
     }
 
     writeRecordsToFile(recordsStore);

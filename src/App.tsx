@@ -131,16 +131,8 @@ export default function App() {
 
   // Open Form modal for specific district
   const handleLogForDistrict = (district: DistrictName) => {
-    const existing = records.find(
-      (r) => r.district === district && r.date === selectedDate
-    );
-    if (existing) {
-      setEditingRecord(existing);
-      setDefaultDistrictForForm(district);
-    } else {
-      setEditingRecord(null);
-      setDefaultDistrictForForm(district);
-    }
+    setEditingRecord(null);
+    setDefaultDistrictForForm(district);
     setIsFormOpen(true);
   };
 

@@ -71,7 +71,7 @@ export const DistrictCardsGrid: React.FC<DistrictCardsGridProps> = ({
                   {s.hasReportedCurrentSunday ? (
                     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-900 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
                       <CheckCircle className="w-3 h-3 mr-1 text-emerald-600 dark:text-emerald-400" />
-                      Reported
+                      Reported ({s.recordCount} {s.recordCount === 1 ? 'entry' : 'entries'})
                     </span>
                   ) : (
                     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300 border border-amber-300 dark:border-amber-800">
@@ -134,7 +134,7 @@ export const DistrictCardsGrid: React.FC<DistrictCardsGridProps> = ({
                   className="inline-flex items-center font-black text-white bg-indigo-600 hover:bg-indigo-500 px-2.5 py-1 rounded-md transition-colors cursor-pointer shadow-xs text-xs"
                 >
                   <Plus className="w-3.5 h-3.5 mr-1" />
-                  <span>{s.hasReportedCurrentSunday ? 'Update' : 'Log Count'}</span>
+                  <span>+ Add Entry</span>
                 </button>
               </div>
 

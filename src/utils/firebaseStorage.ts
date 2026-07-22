@@ -101,20 +101,7 @@ export async function saveRecordToFirestore(
   const femaleNum = Math.max(0, Number(recordData.females) || 0);
   const computedTotal = maleNum + femaleNum;
 
-  let docId = id;
-
-  if (!docId) {
-    // Check if record exists for same district and date
-    const existing = await fetchFirestoreRecords();
-    const match = existing.find(
-      (r) => r.district === recordData.district && r.date === recordData.date
-    );
-    if (match) {
-      docId = match.id;
-    } else {
-      docId = `rec-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
-    }
-  }
+  const docId = id || `rec-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
 
   const docRef = doc(db, COLLECTION_NAME, docId);
   await setDoc(docRef, {
