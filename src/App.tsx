@@ -16,6 +16,7 @@ import { DistrictCardsGrid } from './components/DistrictCardsGrid';
 import { AttendanceFormModal } from './components/AttendanceFormModal';
 import { RecordsTable } from './components/RecordsTable';
 import { WhatsAppExportModal } from './components/WhatsAppExportModal';
+import { AdminPinModal } from './components/AdminPinModal';
 import { AnalyticsCharts } from './components/AnalyticsCharts';
 import {
   LayoutDashboard,
@@ -36,6 +37,7 @@ export default function App() {
   const [editingRecord, setEditingRecord] = useState<AttendanceRecord | null>(null);
   const [defaultDistrictForForm, setDefaultDistrictForForm] = useState<DistrictName | null>(null);
   const [isWhatsAppOpen, setIsWhatsAppOpen] = useState(false);
+  const [isAdminPinOpen, setIsAdminPinOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'dashboard' | 'table' | 'analytics'>('dashboard');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -179,7 +181,7 @@ export default function App() {
         onOpenWhatsApp={() => setIsWhatsAppOpen(true)}
         onExportCSV={() => exportToCSV(records)}
         onResetData={handleResetData}
-        onResetToZero={handleResetToZero}
+        onResetToZero={() => setIsAdminPinOpen(true)}
       />
 
       {/* Main App Canvas */}
@@ -315,6 +317,12 @@ export default function App() {
         onClose={() => setIsWhatsAppOpen(false)}
         records={records}
         selectedDate={selectedDate}
+      />
+
+      <AdminPinModal
+        isOpen={isAdminPinOpen}
+        onClose={() => setIsAdminPinOpen(false)}
+        onConfirmReset={handleResetToZero}
       />
 
       {/* App Footer */}

@@ -12,11 +12,9 @@ export const LAGOS_DISTRICTS: DistrictName[] = [
 ];
 
 export const SERVICE_TYPES = [
-  'Sunday Service',
-  'Youth Fellowship',
-  'Monthly Combined Service',
-  'Special Youth Sunday',
-  'District Revival / Vigil',
+  'AYAC 2026',
+  'Youth Aflame',
+  'Word Explorer',
 ];
 
 // Helper to get nearest past Sunday date string YYYY-MM-DD
@@ -36,7 +34,7 @@ export const SAMPLE_RECORDS: AttendanceRecord[] = [
     females: 110,
     total: 195,
     date: getRecentSundayDate(),
-    serviceType: 'Sunday Service',
+    serviceType: 'AYAC 2026',
     reportedBy: 'Bro. Samuel (Youth Sec)',
     remarks: 'Praise God for high turnout!',
     createdAt: Date.now() - 3600000 * 5,
@@ -49,7 +47,7 @@ export const SAMPLE_RECORDS: AttendanceRecord[] = [
     females: 68,
     total: 120,
     date: getRecentSundayDate(),
-    serviceType: 'Sunday Service',
+    serviceType: 'AYAC 2026',
     reportedBy: 'Sis. Funke',
     remarks: 'Early morning choir rehearsal helped.',
     createdAt: Date.now() - 3600000 * 4,
@@ -62,7 +60,7 @@ export const SAMPLE_RECORDS: AttendanceRecord[] = [
     females: 42,
     total: 80,
     date: getRecentSundayDate(),
-    serviceType: 'Sunday Service',
+    serviceType: 'AYAC 2026',
     reportedBy: 'Bro. David',
     remarks: 'All 5 branches represented.',
     createdAt: Date.now() - 3600000 * 3,
@@ -75,7 +73,7 @@ export const SAMPLE_RECORDS: AttendanceRecord[] = [
     females: 55,
     total: 100,
     date: getRecentSundayDate(),
-    serviceType: 'Sunday Service',
+    serviceType: 'Youth Aflame',
     reportedBy: 'Sis. Grace',
     remarks: 'New youth members welcomed.',
     createdAt: Date.now() - 3600000 * 2,
@@ -88,7 +86,7 @@ export const SAMPLE_RECORDS: AttendanceRecord[] = [
     females: 72,
     total: 132,
     date: getRecentSundayDate(),
-    serviceType: 'Sunday Service',
+    serviceType: 'Word Explorer',
     reportedBy: 'Bro. John',
     remarks: 'Good attendance across zonal fellowships.',
     createdAt: Date.now() - 3600000 * 1,
@@ -101,7 +99,7 @@ export const SAMPLE_RECORDS: AttendanceRecord[] = [
     females: 48,
     total: 90,
     date: getRecentSundayDate(),
-    serviceType: 'Sunday Service',
+    serviceType: 'AYAC 2026',
     reportedBy: 'Bro. Emmanuel',
     remarks: 'Youth Sunday service went smoothly.',
     createdAt: Date.now() - 1800000,

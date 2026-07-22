@@ -24,7 +24,7 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
   const [males, setMales] = useState<string>('0');
   const [females, setFemales] = useState<string>('0');
   const [date, setDate] = useState<string>(defaultDate);
-  const [serviceType, setServiceType] = useState<string>('Sunday Service');
+  const [serviceType, setServiceType] = useState<string>('AYAC 2026');
   const [reportedBy, setReportedBy] = useState<string>('');
   const [remarks, setRemarks] = useState<string>('');
   const [errorMsg, setErrorMsg] = useState<string>('');
@@ -35,7 +35,7 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
       setMales(String(editingRecord.males));
       setFemales(String(editingRecord.females));
       setDate(editingRecord.date);
-      setServiceType(editingRecord.serviceType || 'Sunday Service');
+      setServiceType(editingRecord.serviceType || 'AYAC 2026');
       setReportedBy(editingRecord.reportedBy || '');
       setRemarks(editingRecord.remarks || '');
     } else {
@@ -43,7 +43,7 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
       setMales('0');
       setFemales('0');
       setDate(defaultDate);
-      setServiceType('Sunday Service');
+      setServiceType('AYAC 2026');
       setReportedBy('');
       setRemarks('');
     }
