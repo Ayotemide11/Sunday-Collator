@@ -25,23 +25,23 @@ export const Header: React.FC<HeaderProps> = ({
   isLiveConnected = true,
 }) => {
   return (
-    <header id="main-header" className="bg-blue-950 text-white border-b border-blue-900 sticky top-0 z-30 shadow-lg">
+    <header id="main-header" className="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-30 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           
           {/* Brand & Title */}
           <div className="flex items-center space-x-3">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-blue-800 via-blue-600 to-sky-400 p-0.5 shadow-md flex-shrink-0">
-              <div className="w-full h-full bg-blue-950 rounded-[10px] flex items-center justify-center">
-                <Church className="w-6 h-6 text-sky-400" />
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-indigo-700 via-indigo-600 to-indigo-400 p-0.5 shadow-md flex-shrink-0">
+              <div className="w-full h-full bg-slate-900 rounded-[10px] flex items-center justify-center">
+                <Church className="w-6 h-6 text-indigo-300" />
               </div>
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-extrabold bg-sky-500/20 text-sky-300 border border-sky-400/30 uppercase tracking-wider">
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-extrabold bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 uppercase tracking-wider">
                   AYAC LAGOS
                 </span>
-                <span className="text-blue-300/80 text-xs hidden sm:inline font-medium">
+                <span className="text-slate-300 text-xs hidden sm:inline font-medium">
                   Annual Youth Alive Convention, Living Faith Church Lagos
                 </span>
                 {/* Real-time Indicator Pill */}
@@ -49,8 +49,8 @@ export const Header: React.FC<HeaderProps> = ({
                   id="header-live-indicator"
                   className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-extrabold border transition-colors ${
                     isLiveConnected
-                      ? 'bg-sky-500/20 text-sky-300 border-sky-400/40'
-                      : 'bg-blue-900/60 text-blue-300 border-blue-800'
+                      ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400/40'
+                      : 'bg-slate-800 text-slate-300 border-slate-700'
                   }`}
                   title={
                     isLiveConnected
@@ -58,7 +58,7 @@ export const Header: React.FC<HeaderProps> = ({
                       : 'Connecting to live collation server...'
                   }
                 >
-                  <Radio className={`w-3 h-3 mr-1 ${isLiveConnected ? 'text-sky-400 animate-pulse' : 'text-blue-400'}`} />
+                  <Radio className={`w-3 h-3 mr-1 ${isLiveConnected ? 'text-emerald-400 animate-pulse' : 'text-slate-400'}`} />
                   <span>{isLiveConnected ? 'Real-Time Sync' : 'Connecting...'}</span>
                 </span>
               </div>
@@ -75,25 +75,25 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               id="btn-theme-toggle"
               onClick={onToggleTheme}
-              className="inline-flex items-center justify-center px-3 py-2 rounded-lg text-xs font-bold text-sky-200 bg-blue-900/90 hover:bg-blue-800 border border-sky-500/40 transition-colors cursor-pointer shadow-xs"
+              className="inline-flex items-center justify-center px-3 py-2 rounded-lg text-xs font-bold text-slate-200 bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-colors cursor-pointer shadow-xs"
               title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
             >
               {theme === 'dark' ? (
                 <>
-                  <Sun className="w-4 h-4 mr-1.5 text-sky-300" />
+                  <Sun className="w-4 h-4 mr-1.5 text-amber-300" />
                   <span>Light Mode</span>
                 </>
               ) : (
                 <>
-                  <Moon className="w-4 h-4 mr-1.5 text-sky-300" />
+                  <Moon className="w-4 h-4 mr-1.5 text-indigo-300" />
                   <span>Dark Mode</span>
                 </>
               )}
             </button>
 
             {/* Date Selector */}
-            <div className="flex items-center bg-blue-900/80 border border-blue-800 rounded-lg px-3 py-1.5 text-sm text-sky-100">
-              <Calendar className="w-4 h-4 text-sky-400 mr-2 flex-shrink-0" />
+            <div className="flex items-center bg-slate-800/90 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-100">
+              <Calendar className="w-4 h-4 text-indigo-400 mr-2 flex-shrink-0" />
               <input
                 id="header-date-picker"
                 type="date"
@@ -107,7 +107,7 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               id="btn-add-entry-header"
               onClick={onOpenForm}
-              className="inline-flex items-center justify-center px-3.5 py-2 rounded-lg text-sm font-black text-blue-950 bg-sky-400 hover:bg-sky-300 transition-colors shadow-sm cursor-pointer"
+              className="inline-flex items-center justify-center px-3.5 py-2 rounded-lg text-sm font-black text-white bg-indigo-600 hover:bg-indigo-500 transition-colors shadow-sm cursor-pointer"
             >
               <PlusCircle className="w-4 h-4 mr-1.5" />
               <span>Log Attendance</span>
@@ -117,7 +117,7 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               id="btn-whatsapp-export"
               onClick={onOpenWhatsApp}
-              className="inline-flex items-center justify-center px-3 py-2 rounded-lg text-sm font-semibold text-sky-200 bg-blue-900/90 border border-blue-700 hover:bg-blue-800 transition-colors cursor-pointer"
+              className="inline-flex items-center justify-center px-3 py-2 rounded-lg text-sm font-semibold text-slate-200 bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-colors cursor-pointer"
               title="Generate WhatsApp summary text"
             >
               <Share2 className="w-4 h-4 mr-1.5" />
@@ -127,7 +127,7 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               id="btn-export-csv"
               onClick={onExportCSV}
-              className="inline-flex items-center justify-center px-2.5 py-2 rounded-lg text-sm font-medium text-sky-200 bg-blue-900/60 hover:bg-blue-800 border border-blue-800 transition-colors cursor-pointer"
+              className="inline-flex items-center justify-center px-2.5 py-2 rounded-lg text-sm font-medium text-slate-200 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition-colors cursor-pointer"
               title="Download CSV report"
             >
               <Download className="w-4 h-4" />
@@ -137,10 +137,10 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               id="btn-reset-to-zero"
               onClick={onResetToZero}
-              className="inline-flex items-center justify-center px-2.5 py-2 rounded-lg text-xs font-semibold text-sky-200 bg-blue-950 hover:bg-blue-900 border border-sky-800 transition-colors cursor-pointer"
+              className="inline-flex items-center justify-center px-2.5 py-2 rounded-lg text-xs font-semibold text-slate-300 bg-slate-950 hover:bg-slate-800 border border-slate-800 transition-colors cursor-pointer"
               title="Reset all figures to zero (Admin PIN Required)"
             >
-              <RotateCcw className="w-3.5 h-3.5 mr-1 text-sky-400" />
+              <RotateCcw className="w-3.5 h-3.5 mr-1 text-slate-400" />
               <span>Reset to Zero</span>
             </button>
 

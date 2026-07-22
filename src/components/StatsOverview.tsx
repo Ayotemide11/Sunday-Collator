@@ -22,14 +22,14 @@ export const StatsOverview: React.FC<StatsOverviewProps> = ({ stats, selectedDat
   return (
     <div id="stats-overview-section" className="space-y-3">
       {/* Date Header Badge */}
-      <div className="flex flex-wrap items-center justify-between text-slate-700 dark:text-sky-200 text-xs sm:text-sm px-1 font-medium">
+      <div className="flex flex-wrap items-center justify-between text-slate-900 dark:text-slate-200 text-xs sm:text-sm px-1 font-medium">
         <div className="flex items-center space-x-2">
-          <span className="font-extrabold text-slate-900 dark:text-sky-100">Summary for {formattedDate}</span>
-          <span className="bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 text-xs px-2.5 py-0.5 rounded-full font-extrabold border border-indigo-200 dark:border-indigo-800">
+          <span className="font-extrabold text-slate-900 dark:text-slate-100">Summary for {formattedDate}</span>
+          <span className="bg-indigo-100 dark:bg-indigo-950 text-indigo-900 dark:text-indigo-200 text-xs px-2.5 py-0.5 rounded-full font-extrabold border border-indigo-200 dark:border-indigo-800">
             Active Collation
           </span>
         </div>
-        <div className="text-xs text-slate-600 dark:text-sky-300/80 font-semibold mt-1 sm:mt-0">
+        <div className="text-xs text-slate-600 dark:text-slate-400 font-semibold mt-1 sm:mt-0">
           {stats.reportingDistrictsCount} of {stats.totalDistrictsCount} Districts Submitted
         </div>
       </div>
@@ -38,7 +38,7 @@ export const StatsOverview: React.FC<StatsOverviewProps> = ({ stats, selectedDat
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
         {/* Total Attendance - Emerald / Teal */}
-        <div id="stat-card-total" className="bg-white dark:bg-blue-950/90 rounded-xl border-2 border-emerald-200 dark:border-emerald-800/60 p-5 shadow-sm relative overflow-hidden transition-all hover:shadow-md">
+        <div id="stat-card-total" className="bg-white dark:bg-slate-900 rounded-xl border-2 border-emerald-200 dark:border-emerald-800/60 p-5 shadow-xs relative overflow-hidden transition-all hover:shadow-md">
           <div className="flex items-center justify-between">
             <span className="text-xs font-black uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
               Grand Total
@@ -53,13 +53,13 @@ export const StatsOverview: React.FC<StatsOverviewProps> = ({ stats, selectedDat
             </span>
             <span className="ml-2 text-xs font-bold text-emerald-700/80 dark:text-emerald-400">participants</span>
           </div>
-          <div className="mt-3 text-xs text-slate-600 dark:text-slate-300 flex items-center font-semibold">
+          <div className="mt-3 text-xs text-slate-600 dark:text-slate-400 flex items-center font-semibold">
             <span className="font-extrabold text-emerald-600 dark:text-emerald-400 mr-1">Collated</span> across reporting districts
           </div>
         </div>
 
-        {/* Male Attendance - Cyan / Blue / Indigo */}
-        <div id="stat-card-males" className="bg-white dark:bg-blue-950/90 rounded-xl border-2 border-cyan-200 dark:border-cyan-800/60 p-5 shadow-sm transition-all hover:shadow-md">
+        {/* Male Attendance - Cyan */}
+        <div id="stat-card-males" className="bg-white dark:bg-slate-900 rounded-xl border-2 border-cyan-200 dark:border-cyan-800/60 p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-center justify-between">
             <span className="text-xs font-black uppercase tracking-wider text-cyan-700 dark:text-cyan-300">
               Total Males (M)
@@ -78,14 +78,14 @@ export const StatsOverview: React.FC<StatsOverviewProps> = ({ stats, selectedDat
           </div>
           <div className="mt-3 w-full bg-cyan-100/60 dark:bg-cyan-950/80 h-2.5 rounded-full overflow-hidden border border-cyan-200/50 dark:border-cyan-800/50">
             <div
-              className="bg-gradient-to-r from-cyan-500 to-blue-600 h-full transition-all duration-500 rounded-full"
+              className="bg-gradient-to-r from-cyan-500 to-cyan-600 h-full transition-all duration-500 rounded-full"
               style={{ width: `${stats.malePercentage}%` }}
             />
           </div>
         </div>
 
-        {/* Female Attendance - Pink / Rose / Fuchsia */}
-        <div id="stat-card-females" className="bg-white dark:bg-blue-950/90 rounded-xl border-2 border-pink-200 dark:border-pink-800/60 p-5 shadow-sm transition-all hover:shadow-md">
+        {/* Female Attendance - Pink */}
+        <div id="stat-card-females" className="bg-white dark:bg-slate-900 rounded-xl border-2 border-pink-200 dark:border-pink-800/60 p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-center justify-between">
             <span className="text-xs font-black uppercase tracking-wider text-pink-700 dark:text-pink-300">
               Total Females (F)
@@ -104,14 +104,14 @@ export const StatsOverview: React.FC<StatsOverviewProps> = ({ stats, selectedDat
           </div>
           <div className="mt-3 w-full bg-pink-100/60 dark:bg-pink-950/80 h-2.5 rounded-full overflow-hidden border border-pink-200/50 dark:border-pink-800/50">
             <div
-              className="bg-gradient-to-r from-pink-500 to-rose-600 h-full transition-all duration-500 rounded-full"
+              className="bg-gradient-to-r from-pink-500 to-rose-500 h-full transition-all duration-500 rounded-full"
               style={{ width: `${stats.femalePercentage}%` }}
             />
           </div>
         </div>
 
-        {/* District Reporting Progress - Amber / Violet */}
-        <div id="stat-card-progress" className="bg-white dark:bg-blue-950/90 rounded-xl border-2 border-amber-200 dark:border-amber-800/60 p-5 shadow-sm transition-all hover:shadow-md">
+        {/* District Reporting Progress - Amber / Indigo */}
+        <div id="stat-card-progress" className="bg-white dark:bg-slate-900 rounded-xl border-2 border-amber-200 dark:border-amber-800/60 p-5 shadow-xs transition-all hover:shadow-md">
           <div className="flex items-center justify-between">
             <span className="text-xs font-black uppercase tracking-wider text-amber-800 dark:text-amber-400">
               Districts Reported

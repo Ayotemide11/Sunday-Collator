@@ -21,10 +21,10 @@ export const DistrictCardsGrid: React.FC<DistrictCardsGridProps> = ({
       <div className="flex flex-wrap items-center justify-between px-1 gap-2">
         <div>
           <h2 className="text-base font-extrabold text-slate-900 dark:text-white flex items-center">
-            <MapPin className="w-4 h-4 text-sky-600 dark:text-sky-400 mr-1.5" />
+            <MapPin className="w-4 h-4 text-indigo-600 dark:text-indigo-400 mr-1.5" />
             AYAC Lagos District Breakdowns
           </h2>
-          <p className="text-xs text-slate-600 dark:text-sky-300/80">
+          <p className="text-xs text-slate-600 dark:text-slate-400">
             Click any district to view or record attendance for Badagry, Epe, Igbogbo, Ijede, Irawo, Magbon-Alade, Morogbo & State Church Ikorodu
           </p>
         </div>
@@ -33,7 +33,7 @@ export const DistrictCardsGrid: React.FC<DistrictCardsGridProps> = ({
           <button
             id="btn-clear-district-filter"
             onClick={() => onSelectFilterDistrict(null)}
-            className="text-xs text-indigo-950 dark:text-indigo-100 font-extrabold bg-indigo-100 dark:bg-indigo-950 hover:bg-indigo-200 dark:hover:bg-indigo-900 border border-indigo-300 dark:border-indigo-700 px-3 py-1 rounded-md transition-colors cursor-pointer"
+            className="text-xs text-slate-800 dark:text-slate-100 font-extrabold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700 px-3 py-1 rounded-md transition-colors cursor-pointer"
           >
             Show All Districts ({selectedFilterDistrict} active)
           </button>
@@ -50,22 +50,22 @@ export const DistrictCardsGrid: React.FC<DistrictCardsGridProps> = ({
             <div
               key={s.district}
               id={`district-card-${s.district.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
-              className={`bg-white dark:bg-blue-950/80 rounded-xl border transition-all shadow-xs hover:shadow-md flex flex-col justify-between ${
+              className={`bg-white dark:bg-slate-900 rounded-xl border transition-all shadow-xs hover:shadow-md flex flex-col justify-between ${
                 isSelected
                   ? 'border-indigo-500 ring-2 ring-indigo-400/40 bg-indigo-50/30 dark:bg-indigo-950/40'
                   : s.hasReportedCurrentSunday
                   ? 'border-emerald-200 dark:border-emerald-900/60 hover:border-emerald-400'
-                  : 'border-slate-200 dark:border-blue-900 bg-slate-50/40 dark:bg-blue-950/40'
+                  : 'border-slate-200 dark:border-slate-800 bg-slate-50/20 dark:bg-slate-900/40'
               }`}
             >
               {/* Card Top Header */}
-              <div className="p-4 border-b border-slate-100 dark:border-blue-900/60">
+              <div className="p-4 border-b border-slate-100 dark:border-slate-800/80">
                 <div className="flex items-start justify-between">
                   <div>
                     <h3 className="font-extrabold text-slate-900 dark:text-white text-sm tracking-tight">
                       {s.district}
                     </h3>
-                    <span className="text-[11px] text-slate-500 dark:text-sky-300/70 font-semibold">AYAC District</span>
+                    <span className="text-[11px] text-slate-500 dark:text-slate-400 font-semibold">AYAC District</span>
                   </div>
 
                   {s.hasReportedCurrentSunday ? (
@@ -81,15 +81,15 @@ export const DistrictCardsGrid: React.FC<DistrictCardsGridProps> = ({
                   )}
                 </div>
 
-                {/* Counts Summary - Vibrant Colors */}
-                <div className="mt-3.5 grid grid-cols-3 gap-2 text-center bg-slate-50/80 dark:bg-blue-900/40 p-2.5 rounded-lg border border-slate-200/80 dark:border-blue-900">
-                  {/* Males - Cyan / Blue */}
+                {/* Counts Summary - Distinct Male Cyan / Female Pink / Total Emerald */}
+                <div className="mt-3.5 grid grid-cols-3 gap-2 text-center bg-slate-50/80 dark:bg-slate-800/50 p-2.5 rounded-lg border border-slate-200/80 dark:border-slate-800">
+                  {/* Males - Cyan */}
                   <div className="bg-cyan-50/60 dark:bg-cyan-950/40 p-1.5 rounded-md border border-cyan-200/60 dark:border-cyan-800/60">
                     <div className="text-[10px] uppercase font-black text-cyan-700 dark:text-cyan-300">Males (M)</div>
                     <div className="text-sm font-black text-cyan-950 dark:text-cyan-100 mt-0.5">{s.males}</div>
                   </div>
 
-                  {/* Females - Pink / Rose */}
+                  {/* Females - Pink */}
                   <div className="bg-pink-50/60 dark:bg-pink-950/40 p-1.5 rounded-md border border-pink-200/60 dark:border-pink-800/60">
                     <div className="text-[10px] uppercase font-black text-pink-700 dark:text-pink-300">Females (F)</div>
                     <div className="text-sm font-black text-pink-950 dark:text-pink-100 mt-0.5">{s.females}</div>
@@ -117,13 +117,13 @@ export const DistrictCardsGrid: React.FC<DistrictCardsGridProps> = ({
               </div>
 
               {/* Card Footer Buttons */}
-              <div className="px-4 py-2.5 bg-slate-50/60 dark:bg-blue-900/20 rounded-b-xl flex items-center justify-between text-xs">
+              <div className="px-4 py-2.5 bg-slate-50/60 dark:bg-slate-800/30 rounded-b-xl flex items-center justify-between text-xs">
                 <button
                   id={`btn-filter-district-${s.district.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
                   onClick={() =>
                     onSelectFilterDistrict(isSelected ? null : s.district)
                   }
-                  className="font-bold text-slate-700 dark:text-sky-300 hover:text-indigo-600 dark:hover:text-white cursor-pointer"
+                  className="font-bold text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-white cursor-pointer"
                 >
                   {isSelected ? 'Reset Filter' : 'Filter Table'}
                 </button>
@@ -131,7 +131,7 @@ export const DistrictCardsGrid: React.FC<DistrictCardsGridProps> = ({
                 <button
                   id={`btn-log-district-${s.district.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
                   onClick={() => onLogForDistrict(s.district)}
-                  className="inline-flex items-center font-black text-blue-950 bg-sky-400 hover:bg-sky-300 px-2.5 py-1 rounded-md transition-colors cursor-pointer shadow-xs text-xs"
+                  className="inline-flex items-center font-black text-white bg-indigo-600 hover:bg-indigo-500 px-2.5 py-1 rounded-md transition-colors cursor-pointer shadow-xs text-xs"
                 >
                   <Plus className="w-3.5 h-3.5 mr-1" />
                   <span>{s.hasReportedCurrentSunday ? 'Update' : 'Log Count'}</span>

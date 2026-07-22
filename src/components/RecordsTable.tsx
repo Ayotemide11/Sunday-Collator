@@ -79,17 +79,17 @@ export const RecordsTable: React.FC<RecordsTableProps> = ({
   const sumTotal = sumMales + sumFemales;
 
   return (
-    <div id="records-table-container" className="bg-white dark:bg-blue-950/80 rounded-xl border border-slate-200 dark:border-blue-900 shadow-xs overflow-hidden transition-colors">
+    <div id="records-table-container" className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden transition-colors">
       
       {/* Table Header & Controls */}
-      <div className="p-4 bg-slate-50 dark:bg-blue-900/30 border-b border-slate-200 dark:border-blue-900 space-y-3">
+      <div className="p-4 bg-slate-50 dark:bg-slate-800/40 border-b border-slate-200 dark:border-slate-800 space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex items-center space-x-2">
             <FileSpreadsheet className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
             <h3 className="font-extrabold text-slate-900 dark:text-white text-base">
               Collation Attendance Records
             </h3>
-            <span className="text-xs bg-indigo-100 dark:bg-indigo-950 font-extrabold text-indigo-900 dark:text-indigo-200 px-2.5 py-0.5 rounded-full border border-indigo-200 dark:border-indigo-800">
+            <span className="text-xs bg-indigo-100 dark:bg-slate-800 font-extrabold text-indigo-900 dark:text-indigo-200 px-2.5 py-0.5 rounded-full border border-indigo-200 dark:border-slate-700">
               {sortedRecords.length} entries
             </span>
           </div>
@@ -101,8 +101,8 @@ export const RecordsTable: React.FC<RecordsTableProps> = ({
               onClick={() => setUseDateFilter(!useDateFilter)}
               className={`text-xs px-3 py-1.5 rounded-lg border font-extrabold transition-colors cursor-pointer ${
                 useDateFilter
-                  ? 'bg-indigo-950 text-indigo-200 border-indigo-900 dark:bg-indigo-400 dark:text-indigo-950 dark:border-indigo-400'
-                  : 'bg-white text-slate-800 border-slate-200 hover:bg-slate-50 dark:bg-blue-900 dark:text-sky-200 dark:border-blue-800'
+                  ? 'bg-slate-900 text-white border-slate-900 dark:bg-indigo-600 dark:text-white dark:border-indigo-500'
+                  : 'bg-white text-slate-800 border-slate-200 hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-700'
               }`}
             >
               {useDateFilter ? 'Filter: Active Date' : 'Showing All Dates'}
@@ -114,20 +114,20 @@ export const RecordsTable: React.FC<RecordsTableProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
           {/* Search Box */}
           <div className="relative">
-            <Search className="w-4 h-4 text-slate-400 dark:text-sky-400 absolute left-3 top-2.5" />
+            <Search className="w-4 h-4 text-slate-400 dark:text-slate-400 absolute left-3 top-2.5" />
             <input
               id="input-table-search"
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search district, reporter..."
-              className="w-full pl-9 pr-3 py-1.5 text-xs bg-white dark:bg-blue-950 border border-slate-300 dark:border-blue-800 rounded-lg text-slate-900 dark:text-sky-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full pl-9 pr-3 py-1.5 text-xs bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
 
           {/* District Dropdown Filter */}
-          <div className="flex items-center space-x-1.5 bg-white dark:bg-blue-950 border border-slate-300 dark:border-blue-800 rounded-lg px-2 py-1">
-            <Filter className="w-3.5 h-3.5 text-indigo-500 dark:text-sky-400 flex-shrink-0" />
+          <div className="flex items-center space-x-1.5 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-2 py-1">
+            <Filter className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400 flex-shrink-0" />
             <select
               id="select-table-district-filter"
               value={selectedFilterDistrict || ''}
@@ -136,11 +136,11 @@ export const RecordsTable: React.FC<RecordsTableProps> = ({
                   e.target.value ? (e.target.value as DistrictName) : null
                 )
               }
-              className="w-full bg-transparent text-xs font-bold text-slate-900 dark:text-sky-100 focus:outline-none cursor-pointer"
+              className="w-full bg-transparent text-xs font-bold text-slate-900 dark:text-slate-100 focus:outline-none cursor-pointer"
             >
-              <option value="" className="dark:bg-blue-950 text-slate-900 dark:text-sky-100">All Districts (8 Total)</option>
+              <option value="" className="dark:bg-slate-900 text-slate-900 dark:text-slate-100">All Districts (8 Total)</option>
               {LAGOS_DISTRICTS.map((d) => (
-                <option key={d} value={d} className="dark:bg-blue-950 text-slate-900 dark:text-sky-100">
+                <option key={d} value={d} className="dark:bg-slate-900 text-slate-900 dark:text-slate-100">
                   {d}
                 </option>
               ))}
@@ -149,14 +149,14 @@ export const RecordsTable: React.FC<RecordsTableProps> = ({
 
           {/* Date Picker Filter */}
           {useDateFilter && (
-            <div className="flex items-center space-x-1.5 bg-white dark:bg-blue-950 border border-slate-300 dark:border-blue-800 rounded-lg px-2 py-1">
-              <Calendar className="w-3.5 h-3.5 text-indigo-500 dark:text-sky-400 flex-shrink-0" />
+            <div className="flex items-center space-x-1.5 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-2 py-1">
+              <Calendar className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400 flex-shrink-0" />
               <input
                 id="input-table-date-filter"
                 type="date"
                 value={filterDate}
                 onChange={(e) => setFilterDate(e.target.value)}
-                className="w-full bg-transparent text-xs text-slate-900 dark:text-sky-100 focus:outline-none cursor-pointer font-extrabold"
+                className="w-full bg-transparent text-xs text-slate-900 dark:text-slate-100 focus:outline-none cursor-pointer font-extrabold"
               />
             </div>
           )}
@@ -167,7 +167,7 @@ export const RecordsTable: React.FC<RecordsTableProps> = ({
       <div className="overflow-x-auto">
         <table className="w-full text-left text-xs border-collapse">
           <thead>
-            <tr className="bg-slate-900 text-white dark:bg-blue-900/90 dark:text-sky-200 font-extrabold uppercase tracking-wider border-b border-slate-800">
+            <tr className="bg-slate-900 text-white dark:bg-slate-950 dark:text-slate-200 font-extrabold uppercase tracking-wider border-b border-slate-800">
               <th className="py-3.5 px-4">
                 <button
                   id="btn-sort-district"
@@ -205,10 +205,10 @@ export const RecordsTable: React.FC<RecordsTableProps> = ({
               <th className="py-3.5 px-4 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-200 dark:divide-blue-900/50">
+          <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
             {sortedRecords.length === 0 ? (
               <tr>
-                <td colSpan={8} className="text-center py-10 text-slate-500 dark:text-sky-300/60">
+                <td colSpan={8} className="text-center py-10 text-slate-500 dark:text-slate-400">
                   <p className="font-extrabold text-sm">No collation records found.</p>
                   <p className="text-xs mt-1">
                     Try adjusting filters or click &quot;Log Attendance&quot; to add a new submission.
@@ -217,11 +217,11 @@ export const RecordsTable: React.FC<RecordsTableProps> = ({
               </tr>
             ) : (
               sortedRecords.map((r) => (
-                <tr key={r.id} className="hover:bg-slate-50 dark:hover:bg-blue-900/40 transition-colors">
+                <tr key={r.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
                   <td className="py-3 px-4 font-extrabold text-slate-900 dark:text-white">
                     {r.district}
                   </td>
-                  <td className="py-3 px-4 text-slate-700 dark:text-sky-200 font-bold whitespace-nowrap">
+                  <td className="py-3 px-4 text-slate-700 dark:text-slate-300 font-bold whitespace-nowrap">
                     {r.date}
                   </td>
                   {/* Distinct Male Badge (Cyan) */}
@@ -242,10 +242,10 @@ export const RecordsTable: React.FC<RecordsTableProps> = ({
                       {r.total}
                     </span>
                   </td>
-                  <td className="py-3 px-4 text-slate-700 dark:text-sky-300 font-medium">
+                  <td className="py-3 px-4 text-slate-700 dark:text-slate-300 font-medium">
                     {r.serviceType || 'Sunday Service'}
                   </td>
-                  <td className="py-3 px-4 text-slate-600 dark:text-sky-300/70 font-semibold">
+                  <td className="py-3 px-4 text-slate-600 dark:text-slate-400 font-semibold">
                     {r.reportedBy || '—'}
                   </td>
                   <td className="py-3 px-4 text-right space-x-1 whitespace-nowrap">
@@ -274,7 +274,7 @@ export const RecordsTable: React.FC<RecordsTableProps> = ({
                         <button
                           id={`btn-edit-row-${r.id}`}
                           onClick={() => onEdit(r)}
-                          className="p-1.5 text-indigo-600 dark:text-sky-300 hover:text-indigo-800 hover:bg-indigo-100 dark:hover:bg-blue-800 rounded-md transition-colors cursor-pointer"
+                          className="p-1.5 text-indigo-700 dark:text-indigo-300 hover:text-indigo-900 hover:bg-indigo-100 dark:hover:bg-slate-800 rounded-md transition-colors cursor-pointer"
                           title="Edit Record"
                         >
                           <Edit3 className="w-3.5 h-3.5" />
@@ -282,7 +282,7 @@ export const RecordsTable: React.FC<RecordsTableProps> = ({
                         <button
                           id={`btn-delete-row-${r.id}`}
                           onClick={() => setDeleteConfirmId(r.id)}
-                          className="p-1.5 text-rose-500 hover:text-rose-700 hover:bg-rose-100 dark:hover:bg-rose-950 rounded-md transition-colors cursor-pointer"
+                          className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-slate-800 rounded-md transition-colors cursor-pointer"
                           title="Delete Record"
                         >
                           <Trash2 className="w-3.5 h-3.5" />

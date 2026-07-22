@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AttendanceRecord } from '../types';
-import { generateWhatsAppReport } from '../utils/storage';
-import { X, Copy, Check, Share2, Calendar } from 'lucide-react';
+import { generateWhatsAppReport, calculateCollatedStats } from '../utils/storage';
+import { X, Copy, Check, Share2, MessageSquare } from 'lucide-react';
 
 interface WhatsAppExportModalProps {
   isOpen: boolean;
@@ -16,110 +16,120 @@ export const WhatsAppExportModal: React.FC<WhatsAppExportModalProps> = ({
   records,
   selectedDate,
 }) => {
-  const [reportDate, setReportDate] = useState<string>(selectedDate);
-  const [copied, setCopied] = useState<boolean>(false);
+  const [copied, setCopied] = useState(false);
 
   if (!isOpen) return null;
 
-  const rawReportText = generateWhatsAppReport(records, reportDate);
+  const stats = calculateCollatedStats(records, selectedDate);
+  const textReport = generateWhatsAppReport(records, selectedDate);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(rawReportText);
+    navigator.clipboard.writeText(textReport);
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
   };
 
-  const handleOpenWhatsApp = () => {
-    const encoded = encodeURIComponent(rawReportText);
-    window.open(`https://wa.me/?text=${encoded}`, '_blank');
+  const handleOpenWhatsAppNative = () => {
+    const encoded = encodeURIComponent(textReport);
+    window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
   };
 
   return (
-    <div id="whatsapp-modal-overlay" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-blue-950/75 backdrop-blur-xs">
-      <div className="bg-white dark:bg-blue-950 rounded-2xl border border-blue-100 dark:border-blue-900 shadow-2xl w-full max-w-xl overflow-hidden animate-in fade-in duration-200">
+    <div id="whatsapp-modal-overlay" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-xs">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border-2 border-slate-200 dark:border-slate-800 shadow-2xl w-full max-w-xl overflow-hidden animate-in fade-in duration-200">
         
         {/* Modal Header */}
-        <div className="bg-blue-950 text-white px-6 py-4 flex items-center justify-between border-b border-blue-900">
+        <div className="bg-slate-900 text-white px-6 py-4 flex items-center justify-between border-b border-slate-800">
           <div className="flex items-center space-x-2">
-            <Share2 className="w-5 h-5 text-sky-400" />
+            <MessageSquare className="w-5 h-5 text-emerald-400" />
             <div>
-              <h3 className="text-lg font-black text-white">WhatsApp Sunday Broadcast</h3>
-              <p className="text-xs text-sky-300">Format attendance for executive & group chat broadcast</p>
+              <h3 className="text-base font-black text-white">
+                WhatsApp Sunday Collation Summary
+              </h3>
+              <p className="text-xs text-slate-300">
+                Official structured report ready for AYAC Lagos executives
+              </p>
             </div>
           </div>
           <button
             id="btn-close-whatsapp-modal"
             onClick={onClose}
-            className="text-sky-300 hover:text-white p-1 rounded-lg hover:bg-blue-900 transition-colors cursor-pointer"
+            className="text-slate-300 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Modal Content */}
+        {/* Modal Body */}
         <div className="p-6 space-y-4">
           
-          {/* Date Picker Selector */}
-          <div className="flex items-center justify-between bg-blue-50/60 dark:bg-blue-900/40 p-3 rounded-lg border border-blue-100 dark:border-blue-800">
-            <label htmlFor="input-whatsapp-date" className="text-xs font-bold text-blue-950 dark:text-sky-200 flex items-center">
-              <Calendar className="w-4 h-4 mr-1.5 text-sky-600 dark:text-sky-400" />
-              Report Date:
-            </label>
-            <input
-              id="input-whatsapp-date"
-              type="date"
-              value={reportDate}
-              onChange={(e) => setReportDate(e.target.value)}
-              className="bg-white dark:bg-blue-950 border border-blue-200 dark:border-blue-800 text-xs font-bold text-blue-950 dark:text-sky-100 rounded-md px-2.5 py-1 focus:ring-1 focus:ring-sky-500 cursor-pointer"
-            />
+          {/* Quick Metrics Bar */}
+          <div className="grid grid-cols-3 gap-2 text-center bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-200 dark:border-slate-800 text-xs">
+            <div>
+              <div className="text-[10px] uppercase font-bold text-slate-500">Districts</div>
+              <div className="text-sm font-black text-slate-900 dark:text-white mt-0.5">
+                {stats.reportingDistrictsCount} / {stats.totalDistrictsCount}
+              </div>
+            </div>
+            <div>
+              <div className="text-[10px] uppercase font-bold text-cyan-700 dark:text-cyan-400">Males / Females</div>
+              <div className="text-sm font-black text-slate-900 dark:text-white mt-0.5">
+                {stats.totalMales} / {stats.totalFemales}
+              </div>
+            </div>
+            <div>
+              <div className="text-[10px] uppercase font-bold text-emerald-700 dark:text-emerald-400">Grand Total</div>
+              <div className="text-sm font-black text-emerald-600 dark:text-emerald-400 mt-0.5">
+                {stats.grandTotal}
+              </div>
+            </div>
           </div>
 
           {/* Formatted Text Preview Container */}
-          <div className="relative">
-            <div className="text-xs font-extrabold text-blue-900 dark:text-sky-300 uppercase tracking-wider mb-1 flex items-center justify-between">
-              <span>Preview Text (Ready for WhatsApp)</span>
-              {copied && <span className="text-sky-400 font-bold lowercase">Copied to clipboard!</span>}
-            </div>
+          <div>
+            <label id="lbl-whatsapp-report" htmlFor="textarea-whatsapp-preview" className="block text-xs font-black text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5">
+              Copyable Text Preview
+            </label>
             <textarea
               id="textarea-whatsapp-preview"
+              value={textReport}
               readOnly
-              value={rawReportText}
-              rows={12}
-              className="w-full bg-blue-950 text-sky-200 font-mono text-xs p-4 rounded-xl border border-blue-900 focus:outline-none resize-none shadow-inner leading-relaxed"
+              rows={11}
+              className="w-full bg-slate-950 text-slate-100 font-mono text-xs p-3.5 rounded-xl border-2 border-slate-800 focus:outline-none select-all"
             />
           </div>
 
           {/* Actions */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 border-t border-slate-200 dark:border-slate-800">
             <button
               id="btn-copy-whatsapp-text"
               onClick={handleCopy}
-              className={`w-full sm:w-auto inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-black transition-all shadow-sm cursor-pointer ${
+              className={`w-full sm:w-auto inline-flex items-center justify-center px-4 py-2.5 rounded-xl text-xs font-black transition-colors cursor-pointer shadow-sm ${
                 copied
-                  ? 'bg-sky-500 text-blue-950 border border-sky-400'
-                  : 'bg-blue-900 text-sky-100 hover:bg-blue-800 border border-blue-800'
+                  ? 'bg-emerald-600 text-white'
+                  : 'bg-indigo-600 hover:bg-indigo-500 text-white'
               }`}
             >
               {copied ? (
                 <>
-                  <Check className="w-4 h-4 mr-2 text-blue-950" />
-                  <span>Text Copied!</span>
+                  <Check className="w-4 h-4 mr-1.5" />
+                  <span>Copied to Clipboard!</span>
                 </>
               ) : (
                 <>
-                  <Copy className="w-4 h-4 mr-2 text-sky-300" />
+                  <Copy className="w-4 h-4 mr-1.5" />
                   <span>Copy Report Text</span>
                 </>
               )}
             </button>
 
             <button
-              id="btn-share-whatsapp-direct"
-              onClick={handleOpenWhatsApp}
-              className="w-full sm:w-auto inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-black text-blue-950 bg-sky-400 hover:bg-sky-300 transition-colors shadow-sm cursor-pointer"
+              id="btn-open-whatsapp-web"
+              onClick={handleOpenWhatsAppNative}
+              className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2.5 rounded-xl text-xs font-black text-white bg-emerald-600 hover:bg-emerald-500 transition-colors cursor-pointer shadow-sm"
             >
-              <Share2 className="w-4 h-4 mr-2" />
-              <span>Share to WhatsApp</span>
+              <Share2 className="w-4 h-4 mr-1.5" />
+              <span>Share via WhatsApp</span>
             </button>
           </div>
 

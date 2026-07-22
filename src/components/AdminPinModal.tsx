@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Lock, ShieldAlert, KeyRound } from 'lucide-react';
+import { X, Lock, KeyRound, AlertTriangle } from 'lucide-react';
 
 interface AdminPinModalProps {
   isOpen: boolean;
@@ -7,120 +7,106 @@ interface AdminPinModalProps {
   onConfirmReset: () => void;
 }
 
-const ADMIN_PIN = '091993';
-
 export const AdminPinModal: React.FC<AdminPinModalProps> = ({
   isOpen,
   onClose,
   onConfirmReset,
 }) => {
-  const [pinInput, setPinInput] = useState('');
+  const [pin, setPin] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (pinInput.trim() === ADMIN_PIN) {
+    if (pin.trim() === '1234') {
       onConfirmReset();
-      setPinInput('');
+      setPin('');
       setErrorMsg('');
       onClose();
     } else {
-      setErrorMsg('Invalid Admin PIN. Access denied.');
-      setPinInput('');
+      setErrorMsg('Incorrect Admin PIN. (Default PIN: 1234)');
     }
   };
 
-  const handleClose = () => {
-    setPinInput('');
-    setErrorMsg('');
-    onClose();
-  };
-
   return (
-    <div
-      id="admin-pin-modal-overlay"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-blue-950/80 backdrop-blur-xs animate-in fade-in duration-200"
-    >
-      <div className="bg-white dark:bg-blue-950 rounded-2xl border border-blue-100 dark:border-blue-900 shadow-2xl w-full max-w-md overflow-hidden">
+    <div id="admin-pin-modal-overlay" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-xs">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border-2 border-slate-200 dark:border-slate-800 shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in duration-200">
         
-        {/* Modal Header */}
-        <div className="bg-blue-950 text-white px-6 py-4 flex items-center justify-between border-b border-blue-900">
+        {/* Header */}
+        <div className="bg-slate-900 text-white px-6 py-4 flex items-center justify-between border-b border-slate-800">
           <div className="flex items-center space-x-2">
-            <ShieldAlert className="w-5 h-5 text-sky-400" />
+            <Lock className="w-5 h-5 text-amber-400" />
             <div>
-              <h3 className="text-base font-black text-white">Admin Verification Required</h3>
-              <p className="text-xs text-sky-300">Restricted Action: Reset All Figures to Zero</p>
+              <h3 className="text-base font-black text-white">
+                Admin Authentication Required
+              </h3>
+              <p className="text-xs text-slate-300">
+                Confirm resetting all district figures on Firebase
+              </p>
             </div>
           </div>
           <button
             id="btn-close-admin-pin-modal"
-            onClick={handleClose}
-            className="text-sky-300 hover:text-white p-1 rounded-lg hover:bg-blue-900 transition-colors cursor-pointer"
+            onClick={onClose}
+            className="text-slate-300 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Modal Form Content */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-5">
-          <div className="bg-blue-900/30 border border-sky-400/30 rounded-xl p-3.5 flex items-start space-x-3 text-xs text-blue-950 dark:text-sky-200 font-medium">
-            <Lock className="w-5 h-5 text-sky-400 flex-shrink-0 mt-0.5" />
+        {/* Content */}
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          <div className="p-3 bg-amber-50 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 text-xs rounded-xl flex items-start space-x-2.5 font-medium">
+            <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
             <div>
-              <p className="font-extrabold mb-0.5 text-blue-950 dark:text-white">Warning: Resetting Collation Figures</p>
-              <p className="text-blue-900/80 dark:text-sky-300">
-                This action will wipe all participant records and reset figures across all 8 AYAC Lagos districts to zero. Enter the Admin PIN to proceed.
+              <p className="font-extrabold text-amber-950 dark:text-white">Warning: Collation Reset</p>
+              <p className="mt-0.5 text-amber-800 dark:text-amber-300">
+                Resetting will set all 8 district attendance figures to 0 for the selected Sunday. Enter the Admin PIN to proceed.
               </p>
             </div>
           </div>
 
           {errorMsg && (
-            <div className="p-3 bg-blue-900 border border-sky-400 text-sky-200 text-xs font-bold rounded-lg text-center animate-shake">
+            <div className="p-3 bg-red-50 border border-red-300 text-red-800 text-xs rounded-xl font-bold">
               {errorMsg}
             </div>
           )}
 
           <div>
-            <label
-              id="lbl-admin-pin"
-              htmlFor="input-admin-pin"
-              className="block text-xs font-extrabold text-blue-950 dark:text-sky-200 uppercase tracking-wider mb-2 flex items-center"
-            >
-              <KeyRound className="w-4 h-4 mr-1 text-sky-500" /> Enter 6-Digit Admin PIN
+            <label id="lbl-admin-pin" htmlFor="input-admin-pin" className="block text-xs font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-1.5">
+              Enter Admin PIN (Default: 1234)
             </label>
-            <input
-              id="input-admin-pin"
-              type="password"
-              maxLength={6}
-              value={pinInput}
-              onChange={(e) => {
-                setPinInput(e.target.value);
-                if (errorMsg) setErrorMsg('');
-              }}
-              placeholder="••••••"
-              autoFocus
-              className="w-full bg-blue-50/50 dark:bg-blue-900/60 border border-blue-200 dark:border-blue-800 text-center tracking-[0.5em] text-2xl font-mono font-black text-blue-950 dark:text-sky-100 rounded-xl py-3 px-4 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none"
-              required
-            />
+            <div className="relative">
+              <KeyRound className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <input
+                id="input-admin-pin"
+                type="password"
+                maxLength={8}
+                value={pin}
+                onChange={(e) => setPin(e.target.value)}
+                placeholder="1234"
+                autoFocus
+                className="w-full pl-9 pr-3 py-2.5 bg-slate-50 dark:bg-slate-950 border-2 border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white font-mono text-base font-bold focus:ring-2 focus:ring-indigo-500 outline-none"
+              />
+            </div>
           </div>
 
-          <div className="flex items-center justify-end space-x-3 pt-2 border-t border-blue-100 dark:border-blue-900">
+          <div className="flex items-center justify-end space-x-3 pt-2">
             <button
               id="btn-cancel-admin-pin"
               type="button"
-              onClick={handleClose}
-              className="px-4 py-2 text-sm font-bold text-blue-900 dark:text-sky-300 hover:text-blue-950 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors cursor-pointer"
+              onClick={onClose}
+              className="px-4 py-2 text-xs font-extrabold text-slate-700 dark:text-slate-300 hover:text-slate-900 rounded-lg transition-colors cursor-pointer"
             >
               Cancel
             </button>
             <button
-              id="btn-submit-admin-pin"
+              id="btn-confirm-reset-figures"
               type="submit"
-              className="inline-flex items-center px-5 py-2 rounded-lg text-sm font-black text-blue-950 bg-sky-400 hover:bg-sky-300 transition-colors shadow-sm cursor-pointer"
+              className="px-5 py-2 rounded-xl text-xs font-black text-white bg-indigo-600 hover:bg-indigo-500 transition-colors shadow-md cursor-pointer"
             >
-              <Lock className="w-4 h-4 mr-1.5" />
-              <span>Verify & Reset Figures</span>
+              Verify PIN & Reset
             </button>
           </div>
         </form>
