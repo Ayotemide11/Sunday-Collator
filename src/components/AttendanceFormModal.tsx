@@ -26,7 +26,7 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
   const [date, setDate] = useState<string>(defaultDate);
   const [serviceType, setServiceType] = useState<string>('AYAC 2026');
   const [reportedBy, setReportedBy] = useState<string>('');
-  const [remarks, setRemarks] = useState<string>('');
+  const [stationName, setStationName] = useState<string>('');
   const [errorMsg, setErrorMsg] = useState<string>('');
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
       setDate(editingRecord.date);
       setServiceType(editingRecord.serviceType || 'AYAC 2026');
       setReportedBy(editingRecord.reportedBy || '');
-      setRemarks(editingRecord.remarks || '');
+      setStationName(editingRecord.stationName || editingRecord.remarks || '');
     } else {
       setDistrict(defaultDistrict || LAGOS_DISTRICTS[0]);
       setMales('0');
@@ -45,7 +45,7 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
       setDate(defaultDate);
       setServiceType('AYAC 2026');
       setReportedBy('');
-      setRemarks('');
+      setStationName('');
     }
     setErrorMsg('');
   }, [editingRecord, defaultDistrict, defaultDate, isOpen]);
@@ -66,6 +66,14 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
       setErrorMsg('Attendance cannot be zero for both male and female.');
       return;
     }
+    if (!reportedBy.trim()) {
+      setErrorMsg('Reported By is required. Please enter who reported this entry.');
+      return;
+    }
+    if (!stationName.trim()) {
+      setErrorMsg('Name of Station is required. Please enter the station name.');
+      return;
+    }
 
     onSave(
       {
@@ -76,7 +84,8 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
         date,
         serviceType,
         reportedBy: reportedBy.trim(),
-        remarks: remarks.trim(),
+        stationName: stationName.trim(),
+        remarks: stationName.trim(),
       },
       editingRecord?.id
     );
@@ -93,7 +102,7 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
           <div>
             <h3 className="text-lg font-black text-white flex items-center">
               <Shield className="w-5 h-5 mr-2 text-indigo-400" />
-              {editingRecord ? 'Edit Attendance Record' : 'Collate Sunday Attendance'}
+              {editingRecord ? 'Edit Attendance Record' : 'Collate Attendance Record'}
             </h3>
             <p className="text-xs text-slate-300 mt-0.5 font-medium">
               Enter participant counts for AYAC Lagos district
@@ -140,7 +149,7 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label id="lbl-service-date" htmlFor="input-service-date" className="block text-xs font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-1.5">
-                Sunday Date <span className="text-indigo-500">*</span>
+                Attendance Date <span className="text-indigo-500">*</span>
               </label>
               <input
                 id="input-service-date"
@@ -234,11 +243,11 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
             </div>
           </div>
 
-          {/* Optional Meta fields */}
+          {/* Mandatory Meta fields: Reported By & Name of Station */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label id="lbl-reported-by" htmlFor="input-reported-by" className="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1">
-                Reported By (Optional)
+              <label id="lbl-reported-by" htmlFor="input-reported-by" className="block text-xs font-black text-slate-800 dark:text-slate-200 mb-1 uppercase tracking-wider">
+                Reported By <span className="text-indigo-500">*</span>
               </label>
               <input
                 id="input-reported-by"
@@ -246,21 +255,23 @@ export const AttendanceFormModal: React.FC<AttendanceFormModalProps> = ({
                 value={reportedBy}
                 onChange={(e) => setReportedBy(e.target.value)}
                 placeholder="e.g. Bro. David (Youth Rep)"
-                className="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none font-bold"
+                className="w-full bg-white dark:bg-slate-950 border-2 border-slate-300 dark:border-slate-700 rounded-lg px-3.5 py-2 text-xs text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none font-bold"
+                required
               />
             </div>
 
             <div>
-              <label id="lbl-remarks" htmlFor="input-remarks" className="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1">
-                Remarks / Notes (Optional)
+              <label id="lbl-station-name" htmlFor="input-station-name" className="block text-xs font-black text-slate-800 dark:text-slate-200 mb-1 uppercase tracking-wider">
+                Name of Station <span className="text-indigo-500">*</span>
               </label>
               <input
-                id="input-remarks"
+                id="input-station-name"
                 type="text"
-                value={remarks}
-                onChange={(e) => setRemarks(e.target.value)}
-                placeholder="e.g. High turnout from choir"
-                className="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none font-bold"
+                value={stationName}
+                onChange={(e) => setStationName(e.target.value)}
+                placeholder="e.g. Central Cathedral / Station 1"
+                className="w-full bg-white dark:bg-slate-950 border-2 border-slate-300 dark:border-slate-700 rounded-lg px-3.5 py-2 text-xs text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 outline-none font-bold"
+                required
               />
             </div>
           </div>

@@ -42,9 +42,9 @@ export const RecordsTable: React.FC<RecordsTableProps> = ({
       const q = searchTerm.toLowerCase();
       const matchDistrict = r.district.toLowerCase().includes(q);
       const matchReporter = (r.reportedBy || '').toLowerCase().includes(q);
-      const matchRemarks = (r.remarks || '').toLowerCase().includes(q);
+      const matchStation = (r.stationName || r.remarks || '').toLowerCase().includes(q);
       const matchService = (r.serviceType || '').toLowerCase().includes(q);
-      if (!matchDistrict && !matchReporter && !matchRemarks && !matchService) {
+      if (!matchDistrict && !matchReporter && !matchStation && !matchService) {
         return false;
       }
     }
@@ -184,7 +184,7 @@ export const RecordsTable: React.FC<RecordsTableProps> = ({
                   onClick={() => toggleSort('date')}
                   className="flex items-center space-x-1 hover:text-indigo-300 cursor-pointer"
                 >
-                  <span>Sunday Date</span>
+                  <span>Date</span>
                   <ArrowUpDown className="w-3 h-3 text-indigo-400" />
                 </button>
               </th>
@@ -201,6 +201,7 @@ export const RecordsTable: React.FC<RecordsTableProps> = ({
                 </button>
               </th>
               <th className="py-3.5 px-4">Service Event</th>
+              <th className="py-3.5 px-4">Name of Station</th>
               <th className="py-3.5 px-4">Reported By</th>
               <th className="py-3.5 px-4 text-right">Actions</th>
             </tr>
@@ -208,7 +209,7 @@ export const RecordsTable: React.FC<RecordsTableProps> = ({
           <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
             {sortedRecords.length === 0 ? (
               <tr>
-                <td colSpan={8} className="text-center py-10 text-slate-500 dark:text-slate-400">
+                <td colSpan={9} className="text-center py-10 text-slate-500 dark:text-slate-400">
                   <p className="font-extrabold text-sm">No collation records found.</p>
                   <p className="text-xs mt-1">
                     Try adjusting filters or click &quot;Log Attendance&quot; to add a new submission.
@@ -243,9 +244,12 @@ export const RecordsTable: React.FC<RecordsTableProps> = ({
                     </span>
                   </td>
                   <td className="py-3 px-4 text-slate-700 dark:text-slate-300 font-medium">
-                    {r.serviceType || 'Sunday Service'}
+                    {r.serviceType || 'AYAC Service'}
                   </td>
-                  <td className="py-3 px-4 text-slate-600 dark:text-slate-400 font-semibold">
+                  <td className="py-3 px-4 text-indigo-900 dark:text-indigo-200 font-extrabold">
+                    {r.stationName || r.remarks || '—'}
+                  </td>
+                  <td className="py-3 px-4 text-slate-800 dark:text-slate-200 font-bold">
                     {r.reportedBy || '—'}
                   </td>
                   <td className="py-3 px-4 text-right space-x-1 whitespace-nowrap">

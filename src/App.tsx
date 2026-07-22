@@ -11,7 +11,7 @@ import {
   getDistrictSummaries,
   exportToCSV,
 } from './utils/storage';
-import { getRecentSundayDate } from './constants';
+import { getTodayDate, getRecentSundayDate } from './constants';
 import { Header } from './components/Header';
 import { StatsOverview } from './components/StatsOverview';
 import { DistrictCardsGrid } from './components/DistrictCardsGrid';
@@ -33,7 +33,7 @@ import {
 
 export default function App() {
   const [records, setRecords] = useState<AttendanceRecord[]>([]);
-  const [selectedDate, setSelectedDate] = useState<string>(getRecentSundayDate());
+  const [selectedDate, setSelectedDate] = useState<string>(getTodayDate());
   const [selectedFilterDistrict, setSelectedFilterDistrict] = useState<DistrictName | null>(null);
   const [isFirebaseConnected, setIsFirebaseConnected] = useState<boolean>(true);
 
@@ -190,7 +190,7 @@ export default function App() {
           <div className="flex items-center space-x-2">
             <Flame className="w-4 h-4 text-indigo-600 dark:text-indigo-400 flex-shrink-0 animate-pulse" />
             <span>
-              <strong className="font-extrabold text-slate-900 dark:text-white">Firebase Firestore Backend Active:</strong> All Sunday collation figures logged from different IP addresses & devices sync instantly in real time.
+              <strong className="font-extrabold text-slate-900 dark:text-white">Firebase Firestore Backend Active:</strong> All attendance collation figures logged from different IP addresses & devices sync instantly in real time.
             </span>
           </div>
           <span className="text-[11px] bg-indigo-100 dark:bg-indigo-900/60 text-indigo-900 dark:text-indigo-300 font-bold px-2.5 py-0.5 rounded border border-indigo-200 dark:border-indigo-700 flex items-center">

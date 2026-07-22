@@ -17,13 +17,14 @@ export const SERVICE_TYPES = [
   'Word Explorer',
 ];
 
-// Helper to get nearest past Sunday date string YYYY-MM-DD
+// Helper to get today's date string YYYY-MM-DD
+export function getTodayDate(): string {
+  return new Date().toISOString().split('T')[0];
+}
+
+// Helper for backward compatibility
 export function getRecentSundayDate(): string {
-  const now = new Date();
-  const day = now.getDay();
-  const diff = now.getDate() - day; // Adjust to Sunday
-  const sunday = new Date(now.setDate(diff));
-  return sunday.toISOString().split('T')[0];
+  return getTodayDate();
 }
 
 export const SAMPLE_RECORDS: AttendanceRecord[] = [
@@ -33,10 +34,10 @@ export const SAMPLE_RECORDS: AttendanceRecord[] = [
     males: 85,
     females: 110,
     total: 195,
-    date: getRecentSundayDate(),
+    date: getTodayDate(),
     serviceType: 'AYAC 2026',
     reportedBy: 'Bro. Samuel (Youth Sec)',
-    remarks: 'Praise God for high turnout!',
+    stationName: 'Central Cathedral',
     createdAt: Date.now() - 3600000 * 5,
     updatedAt: Date.now() - 3600000 * 5,
   },
@@ -46,10 +47,10 @@ export const SAMPLE_RECORDS: AttendanceRecord[] = [
     males: 52,
     females: 68,
     total: 120,
-    date: getRecentSundayDate(),
+    date: getTodayDate(),
     serviceType: 'AYAC 2026',
     reportedBy: 'Sis. Funke',
-    remarks: 'Early morning choir rehearsal helped.',
+    stationName: 'Igbogbo Central Station',
     createdAt: Date.now() - 3600000 * 4,
     updatedAt: Date.now() - 3600000 * 4,
   },
@@ -59,10 +60,10 @@ export const SAMPLE_RECORDS: AttendanceRecord[] = [
     males: 38,
     females: 42,
     total: 80,
-    date: getRecentSundayDate(),
+    date: getTodayDate(),
     serviceType: 'AYAC 2026',
     reportedBy: 'Bro. David',
-    remarks: 'All 5 branches represented.',
+    stationName: 'Ijede Main Branch',
     createdAt: Date.now() - 3600000 * 3,
     updatedAt: Date.now() - 3600000 * 3,
   },
@@ -72,10 +73,10 @@ export const SAMPLE_RECORDS: AttendanceRecord[] = [
     males: 45,
     females: 55,
     total: 100,
-    date: getRecentSundayDate(),
+    date: getTodayDate(),
     serviceType: 'Youth Aflame',
     reportedBy: 'Sis. Grace',
-    remarks: 'New youth members welcomed.',
+    stationName: 'Irawo Youth Center',
     createdAt: Date.now() - 3600000 * 2,
     updatedAt: Date.now() - 3600000 * 2,
   },
@@ -85,10 +86,10 @@ export const SAMPLE_RECORDS: AttendanceRecord[] = [
     males: 60,
     females: 72,
     total: 132,
-    date: getRecentSundayDate(),
+    date: getTodayDate(),
     serviceType: 'Word Explorer',
     reportedBy: 'Bro. John',
-    remarks: 'Good attendance across zonal fellowships.',
+    stationName: 'Badagry Central',
     createdAt: Date.now() - 3600000 * 1,
     updatedAt: Date.now() - 3600000 * 1,
   },
@@ -98,10 +99,10 @@ export const SAMPLE_RECORDS: AttendanceRecord[] = [
     males: 42,
     females: 48,
     total: 90,
-    date: getRecentSundayDate(),
+    date: getTodayDate(),
     serviceType: 'AYAC 2026',
     reportedBy: 'Bro. Emmanuel',
-    remarks: 'Youth Sunday service went smoothly.',
+    stationName: 'Morogbo Fellowship Station',
     createdAt: Date.now() - 1800000,
     updatedAt: Date.now() - 1800000,
   },

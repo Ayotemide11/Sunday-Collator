@@ -1,5 +1,5 @@
 import { AttendanceRecord, CollatedStats, DistrictSummary, DistrictName } from '../types';
-import { LAGOS_DISTRICTS, SAMPLE_RECORDS, getRecentSundayDate } from '../constants';
+import { LAGOS_DISTRICTS, SAMPLE_RECORDS, getRecentSundayDate, getTodayDate } from '../constants';
 
 const STORAGE_KEY = 'ayac_lagos_sunday_records_v1';
 
@@ -200,7 +200,7 @@ export function generateWhatsAppReport(
   records: AttendanceRecord[],
   selectedDate: string
 ): string {
-  const dateStr = selectedDate || getRecentSundayDate();
+  const dateStr = selectedDate || getTodayDate();
   const dateFormatted = new Date(dateStr + 'T00:00:00').toLocaleDateString('en-GB', {
     weekday: 'long',
     day: 'numeric',
@@ -211,7 +211,7 @@ export function generateWhatsAppReport(
   const summaries = getDistrictSummaries(records, dateStr);
   const stats = calculateCollatedStats(records, dateStr);
 
-  let text = `*AYAC LAGOS SUNDAY COLLATION REPORT*\n`;
+  let text = `*AYAC LAGOS COLLATION REPORT*\n`;
   text += `📅 *Date:* ${dateFormatted}\n`;
   text += `------------------------------------\n\n`;
 
@@ -220,7 +220,18 @@ export function generateWhatsAppReport(
     const statusTag = s.hasReportedCurrentSunday ? '✅' : '⏳ Pending';
     if (s.hasReportedCurrentSunday) {
       text += `${idx}. *${s.district}* ${statusTag}\n`;
-      text += `   • Males: ${s.males} | Females: ${s.females} | Total: ${s.total}\n\n`;
+      text += `   • Males: ${s.males} | Females: ${s.females} | Total: ${s.total}\n`;
+      // List stations for this district
+      const districtRecords = records.filter(r => r.district === s.district && r.date === dateStr);
+      if (districtRecords.length > 0) {
+        text += `   • Stations & Reporters:\n`;
+        districtRecords.forEach(r => {
+          const st = r.stationName || r.remarks || 'Main Station';
+          const rep = r.reportedBy || 'N/A';
+          text += `     - ${st} (${r.males}M / ${r.females}F) - Rep: ${rep}\n`;
+        });
+      }
+      text += `\n`;
     } else {
       text += `${idx}. *${s.district}* ${statusTag}\n\n`;
     }
@@ -232,7 +243,7 @@ export function generateWhatsAppReport(
   text += `👨 *Total Males:* ${stats.totalMales} (${stats.malePercentage}%)\n`;
   text += `👩 *Total Females:* ${stats.totalFemales} (${stats.femalePercentage}%)\n`;
   text += `🏆 *GRAND TOTAL PARTICIPANTS:* ${stats.grandTotal}\n`;
-  text += `\n_Generated via AYAC Lagos Sunday Collator_`;
+  text += `\n_Generated via AYAC Lagos Attendance Collator_`;
 
   return text;
 }
@@ -240,7 +251,7 @@ export function generateWhatsAppReport(
 export function exportToCSV(records: AttendanceRecord[], filename = 'ayac_lagos_attendance.csv') {
   if (!records.length) return;
 
-  const headers = ['ID', 'District', 'Date', 'Males', 'Females', 'Total', 'Service Type', 'Reported By', 'Remarks'];
+  const headers = ['ID', 'District', 'Date', 'Males', 'Females', 'Total', 'Service Type', 'Reported By', 'Name of Station'];
   const rows = records.map((r) => [
     r.id,
     `"${r.district}"`,
@@ -250,7 +261,7 @@ export function exportToCSV(records: AttendanceRecord[], filename = 'ayac_lagos_
     r.total,
     `"${r.serviceType || ''}"`,
     `"${r.reportedBy || ''}"`,
-    `"${(r.remarks || '').replace(/"/g, '""')}"`,
+    `"${(r.stationName || r.remarks || '').replace(/"/g, '""')}"`,
   ]);
 
   const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');

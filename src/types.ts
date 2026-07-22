@@ -16,7 +16,8 @@ export interface AttendanceRecord {
   total: number;
   date: string; // YYYY-MM-DD
   serviceType: string; // e.g., "Sunday Morning Service", "Youth Fellowship", "Joint Service"
-  reportedBy?: string;
+  reportedBy: string;
+  stationName: string;
   remarks?: string;
   createdAt: number;
   updatedAt: number;

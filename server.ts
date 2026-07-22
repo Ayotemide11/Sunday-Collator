@@ -12,6 +12,7 @@ interface AttendanceRecord {
   date: string; // YYYY-MM-DD
   serviceType?: string;
   reportedBy?: string;
+  stationName?: string;
   remarks?: string;
   createdAt: number;
   updatedAt: number;
@@ -107,7 +108,8 @@ async function startServer() {
               date: data.date,
               serviceType: data.serviceType || 'AYAC 2026',
               reportedBy: data.reportedBy || '',
-              remarks: data.remarks || '',
+              stationName: data.stationName || data.remarks || '',
+              remarks: data.stationName || data.remarks || '',
               updatedAt: Date.now(),
             }
           : r
@@ -122,7 +124,8 @@ async function startServer() {
         date: data.date,
         serviceType: data.serviceType || 'AYAC 2026',
         reportedBy: data.reportedBy || '',
-        remarks: data.remarks || '',
+        stationName: data.stationName || data.remarks || '',
+        remarks: data.stationName || data.remarks || '',
         createdAt: Date.now(),
         updatedAt: Date.now(),
       };

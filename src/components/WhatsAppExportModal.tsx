@@ -44,7 +44,7 @@ export const WhatsAppExportModal: React.FC<WhatsAppExportModalProps> = ({
             <MessageSquare className="w-5 h-5 text-emerald-400" />
             <div>
               <h3 className="text-base font-black text-white">
-                WhatsApp Sunday Collation Summary
+                WhatsApp Collation Summary
               </h3>
               <p className="text-xs text-slate-300">
                 Official structured report ready for AYAC Lagos executives

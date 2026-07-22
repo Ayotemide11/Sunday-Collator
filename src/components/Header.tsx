@@ -63,7 +63,7 @@ export const Header: React.FC<HeaderProps> = ({
                 </span>
               </div>
               <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white mt-0.5">
-                Sunday Collator
+                Attendance Collator
               </h1>
             </div>
           </div>
