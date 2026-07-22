@@ -1,0 +1,6 @@
+{
+  "name": "AYAC Lagos Sunday Collator",
+  "description": "Collate registered participants, male and female attendance across AYAC Lagos districts including Badagry, Epe, Igbogbo, Ijede, Irawo, Magbon-Alade, Morogbo, and State Church Ikorodu.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
